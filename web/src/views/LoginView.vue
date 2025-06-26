@@ -124,19 +124,19 @@
               <span>{{ t('auth.otherLoginMethods') }}</span>
             </div>
             <div class="login-icons">
-              <a-tooltip :title="t('auth.wechatLogin')">
+              <a-tooltip :title="t('auth.googleLogin')">
                 <a-button shape="circle" class="login-icon" @click="showDevMessage">
-                  <template #icon><wechat-outlined /></template>
+                  <template #icon><google-outlined /></template>
                 </a-button>
               </a-tooltip>
-              <a-tooltip :title="t('auth.enterpriseWechatLogin')">
+              <a-tooltip :title="t('auth.microsoftLogin')">
                 <a-button shape="circle" class="login-icon" @click="showDevMessage">
-                  <template #icon><qrcode-outlined /></template>
+                  <template #icon><windows-outlined /></template>
                 </a-button>
               </a-tooltip>
-              <a-tooltip :title="t('auth.feishuLogin')">
+              <a-tooltip :title="t('auth.facebookLogin')">
                 <a-button shape="circle" class="login-icon" @click="showDevMessage">
-                  <template #icon><thunderbolt-outlined /></template>
+                  <template #icon><facebook-outlined /></template>
                 </a-button>
               </a-tooltip>
             </div>
@@ -167,7 +167,7 @@ import { useUserStore } from '@/stores/user';
 import { message } from 'ant-design-vue';
 import { chatApi } from '@/apis/auth_api';
 import { authApi, healthApi } from '@/apis/public_api';
-import { UserOutlined, LockOutlined, WechatOutlined, QrcodeOutlined, ThunderboltOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import { UserOutlined, LockOutlined, GoogleOutlined, WindowsOutlined, FacebookOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import loginBg from '@/assets/pics/login_bg.jpg';
 
 const router = useRouter();
