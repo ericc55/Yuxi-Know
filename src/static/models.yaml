@@ -21,77 +21,77 @@ MODEL_NAMES:
       - gpt-4o-mini
       - gpt-3.5-turbo
 
-  deepseek:
-    name: DeepSeek
-    url: https://platform.deepseek.com/api-docs/zh-cn/pricing
-    default: deepseek-chat
-    base_url: https://api.deepseek.com/v1
-    env:
-      - DEEPSEEK_API_KEY
-    models:
-      - deepseek-chat
-      - deepseek-reasoner
-  zhipu:
-    name: 智谱AI (Zhipu)
-    url: https://open.bigmodel.cn/dev/api
-    default: glm-4-flash
-    base_url: https://open.bigmodel.cn/api/paas/v4/
-    env:
-      - ZHIPUAI_API_KEY
-    models:
-      - glm-4
-      - glm-4-plus
-      - glm-4-air
-      - glm-4-flash
-      - glm-z1-air
-  siliconflow:
-    name: SiliconFlow
-    url: https://cloud.siliconflow.cn/models
-    default: Qwen/Qwen2.5-7B-Instruct
-    base_url: https://api.siliconflow.cn/v1
-    env:
-      - SILICONFLOW_API_KEY
-    models:
-      - Pro/deepseek-ai/DeepSeek-R1
-      - Pro/deepseek-ai/DeepSeek-V3
-      - Qwen/QwQ-32B
-
-  together.ai:
-    name: Together.ai
-    url: https://api.together.ai/models
-    base_url: https://api.together.xyz/v1/
-    default: meta-llama/Llama-3.3-70B-Instruct-Turbo-Free
-    env:
-      - TOGETHER_API_KEY
-    models:
-      - meta-llama/Llama-3.3-70B-Instruct-Turbo
-      - meta-llama/Llama-3.3-70B-Instruct-Turbo-Free
-      - deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free
-      - Qwen/QwQ-32B
-
-  dashscope:
-    name: 阿里百炼 (DashScope)
-    url: https://bailian.console.aliyun.com/?switchAgent=10226727&productCode=p_efm#/model-market
-    default: qwen3-235b-a22b
-    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
-    env:
-      - DASHSCOPE_API_KEY
-    models:
-      - qwen-max-latest
-      - qwen3-235b-a22b
-      - qwen3-32b
-
-  ark:
-    name: 豆包（Ark）
-    url: https://console.volcengine.com/ark/region:ark+cn-beijing/model
-    default: doubao-1-5-pro-32k-250115
-    base_url: https://ark.cn-beijing.volces.com/api/v3
-    env:
-      - ARK_API_KEY
-    models:
-      - doubao-1-5-pro-32k-250115
-      - doubao-1-5-lite-32k-250115
-      - deepseek-r1-250120
+#  deepseek:
+#    name: DeepSeek
+#    url: https://platform.deepseek.com/api-docs/zh-cn/pricing
+#    default: deepseek-chat
+#    base_url: https://api.deepseek.com/v1
+#    env:
+#      - DEEPSEEK_API_KEY
+#    models:
+#      - deepseek-chat
+#      - deepseek-reasoner
+#  zhipu:
+#    name: 智谱AI (Zhipu)
+#    url: https://open.bigmodel.cn/dev/api
+#    default: glm-4-flash
+#    base_url: https://open.bigmodel.cn/api/paas/v4/
+#    env:
+#      - ZHIPUAI_API_KEY
+#    models:
+#      - glm-4
+#      - glm-4-plus
+#      - glm-4-air
+#      - glm-4-flash
+#      - glm-z1-air
+#  siliconflow:
+#    name: SiliconFlow
+#    url: https://cloud.siliconflow.cn/models
+#    default: Qwen/Qwen2.5-7B-Instruct
+#    base_url: https://api.siliconflow.cn/v1
+#    env:
+#      - SILICONFLOW_API_KEY
+#    models:
+#      - Pro/deepseek-ai/DeepSeek-R1
+#      - Pro/deepseek-ai/DeepSeek-V3
+#      - Qwen/QwQ-32B
+#
+#  together.ai:
+#    name: Together.ai
+#    url: https://api.together.ai/models
+#    base_url: https://api.together.xyz/v1/
+#    default: meta-llama/Llama-3.3-70B-Instruct-Turbo-Free
+#    env:
+#      - TOGETHER_API_KEY
+#    models:
+#      - meta-llama/Llama-3.3-70B-Instruct-Turbo
+#      - meta-llama/Llama-3.3-70B-Instruct-Turbo-Free
+#      - deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free
+#      - Qwen/QwQ-32B
+#
+#  dashscope:
+#    name: 阿里百炼 (DashScope)
+#    url: https://bailian.console.aliyun.com/?switchAgent=10226727&productCode=p_efm#/model-market
+#    default: qwen3-235b-a22b
+#    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+#    env:
+#      - DASHSCOPE_API_KEY
+#    models:
+#      - qwen-max-latest
+#      - qwen3-235b-a22b
+#      - qwen3-32b
+#
+#  ark:
+#    name: 豆包（Ark）
+#    url: https://console.volcengine.com/ark/region:ark+cn-beijing/model
+#    default: doubao-1-5-pro-32k-250115
+#    base_url: https://ark.cn-beijing.volces.com/api/v3
+#    env:
+#      - ARK_API_KEY
+#    models:
+#      - doubao-1-5-pro-32k-250115
+#      - doubao-1-5-lite-32k-250115
+#      - deepseek-r1-250120
 
   openrouter:
     name: OpenRouter
