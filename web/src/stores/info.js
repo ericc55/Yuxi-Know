@@ -32,7 +32,7 @@ export const useInfoStore = defineStore('info', () => {
 
   // 计算属性 - 页脚信息
   const footer = computed(() => infoConfig.value.footer || {
-    copyright: "© Yuxi-Know 2025 [WIP] v0.12.138"
+    copyright: "© Yuxi-Know 2025 [WIP] v0.12.138 | © Ericc 2025 | MIT License"
   })
 
   // 动作方法
