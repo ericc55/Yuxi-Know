@@ -95,7 +95,7 @@ export default {
     examples: {
       example1: 'シンプルなバブルソートアルゴリズムを書いて',
       example2: '今日の東京の天気はどうですか？',
-      example3: 'CFNについて教えて',
+      example3: 'ビッグサイトについて教えて',
       example4: '今日は何曜日ですか？'
     },
     inputPlaceholder: 'メッセージを入力してください...',
