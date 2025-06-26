@@ -37,7 +37,7 @@ export default {
     noDataAvailable: 'No data available'
   },
   navbar: {
-    brand: 'Yuxi-Know',
+    brand: 'YU-KNOW',
     chat: 'Chat',
     agents: 'AI Agents',
     knowledgeBase: 'Knowledge Base',
@@ -78,7 +78,7 @@ export default {
     developmentFeature: 'This feature is under development, stay tuned!'
   },
   home: {
-    title: 'Yuxi-Know',
+    title: 'YU-KNOW',
     subtitle: 'AI-Powered Knowledge Management Tool',
     description: 'Experience the new generation AI knowledge Q&A system, enjoy intelligent conversations, fast knowledge retrieval and personalized Q&A experience.',
     startChat: 'Start Chat',

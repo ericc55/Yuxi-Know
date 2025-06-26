@@ -114,7 +114,7 @@ docker compose up --build -d
 
 ### 如果想要不依赖显卡启动本项目？
 
-只需要修改现在的 docker-compose.yml，删除现有的 deploy 部分代码，但是需要注意的是，这样的话，就无法使用本地模型 [#209](https://github.com/xerrors/Yuxi-Know/issues/209)。
+只需要修改现在的 docker-compose.yml，删除现有的 deploy 部分代码，但是需要注意的是，这样的话，就无法使用本地模型 [#209](https://github.com/xerrors/YU-KNOW/issues/209)。
 
 
 

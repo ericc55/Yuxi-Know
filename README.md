@@ -1,18 +1,18 @@
-<h1 align="center">语析 - 基于大模型的知识库与知识图谱问答系统</h1>
+<h1 align="center">YU-KNOW - 基于大模型的知识库与知识图谱问答系统</h1>
 <div align="center">
 
 ![](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=ffffff)
 ![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=flat&logo=vuedotjs&logoColor=%234FC08D)
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat&logo=fastapi)
-![](https://img.shields.io/github/issues/xerrors/Yuxi-Know?color=F48D73)
+![](https://img.shields.io/github/issues/xerrors/YU-KNOW?color=F48D73)
 ![](https://img.shields.io/github/license/bitcookies/winrar-keygen.svg?logo=github)
-![](https://img.shields.io/github/stars/xerrors/Yuxi-Know)
+![](https://img.shields.io/github/stars/xerrors/YU-KNOW)
 
 </div>
 
 ## 📝 项目概述
 
-语析是一个强大的问答平台，结合了大模型 RAG 知识库与知识图谱技术，基于 Llamaindex + VueJS + FastAPI + Neo4j 构建。
+YU-KNOW是一个强大的问答平台，结合了大模型 RAG 知识库与知识图谱技术，基于 Llamaindex + VueJS + FastAPI + Neo4j 构建。
 
 **核心特点：**
 
@@ -29,8 +29,8 @@ https://github.com/user-attachments/assets/15f7f315-003d-4e41-a260-739c2529f824
 
 ## 📋 更新日志
 
-- **2025.05.07** - 新增权限控制功能，主要角色分为 超级管理员、管理员、普通用户 [PR#173](https://github.com/xerrors/Yuxi-Know/pull/173)
-- **2025.03.30** - 系统中集成智能体（WIP， [PR#96](https://github.com/xerrors/Yuxi-Know/pull/96)）
+- **2025.05.07** - 新增权限控制功能，主要角色分为 超级管理员、管理员、普通用户 [PR#173](https://github.com/xerrors/YU-KNOW/pull/173)
+- **2025.03.30** - 系统中集成智能体（WIP， [PR#96](https://github.com/xerrors/YU-KNOW/pull/96)）
 - **2025.02.24** - 新增网页检索以及内容展示，需配置 `TAVILY_API_KEY`，感谢 [littlewwwhite](https://github.com/littlewwwhite)
 - **2025.02.23** - SiliconFlow 的 Rerank 和 Embedding model 支持，现默认使用 SiliconFlow
 - **2025.02.20** - DeepSeek-R1 支持，需配置 `DEEPSEEK_API_KEY` 或 `SILICONFLOW_API_KEY`
@@ -197,10 +197,10 @@ ark:
 
 感谢以下贡献者的支持！
 
-<a href="https://github.com/xerrors/Yuxi-Know/contributors">
-    <img src="https://contributors.nn.ci/api?repo=xerrors/Yuxi-Know" alt="贡献者名单">
+<a href="https://github.com/xerrors/YU-KNOW/contributors">
+    <img src="https://contributors.nn.ci/api?repo=xerrors/YU-KNOW" alt="贡献者名单">
 </a>
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=xerrors/Yuxi-Know)](https://star-history.com/#xerrors/Yuxi-Know)
+[![Star History Chart](https://api.star-history.com/svg?repos=xerrors/YU-KNOW)](https://star-history.com/#xerrors/YU-KNOW)

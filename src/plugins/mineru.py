@@ -236,8 +236,8 @@ def parse_doc(
 
 if __name__ == "__main__":
 
-    pdf_files_dir = "/home/zwj/workspace/projects/Yuxi-Know/test/struct_pdf"
-    output_dir = "/home/zwj/workspace/projects/Yuxi-Know/test/struct_pdf_output"
+    pdf_files_dir = "/home/zwj/workspace/projects/YU-KNOW/test/struct_pdf"
+    output_dir = "/home/zwj/workspace/projects/YU-KNOW/test/struct_pdf_output"
     pdf_suffixes = [".pdf"]
     image_suffixes = [".png", ".jpeg", ".jpg"]
 

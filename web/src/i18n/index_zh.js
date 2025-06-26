@@ -36,7 +36,7 @@ export default {
     addSuccess: '添加成功'
   },
   navbar: {
-    brand: '语析知识库',
+    brand: 'YU-KNOW知识库',
     chat: '对话',
     agents: 'AI智能体',
     knowledgeBase: '知识库',
@@ -77,7 +77,7 @@ export default {
     developmentFeature: '此功能正在开发中，敬请期待！'
   },
   home: {
-    title: '语析知识库',
+    title: 'YU-KNOW知识库',
     subtitle: '大模型驱动的知识库管理工具',
     description: '体验新一代AI知识问答系统，享受智能对话、快速知识检索和个性化问答体验。',
     startChat: '开始聊天',
@@ -90,7 +90,7 @@ export default {
     }
   },
   chat: {
-    welcome: '你好，我是语析，一个基于知识图谱的智能助手',
+    welcome: '你好，我是YU-KNOW，一个基于知识图谱的智能助手',
     newConversation: '新对话',
     examples: {
       example1: '写一个简单的冒泡排序',

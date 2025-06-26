@@ -10,7 +10,7 @@ export const useInfoStore = defineStore('info', () => {
 
   // 计算属性 - 组织信息
   const organization = computed(() => infoConfig.value.organization || {
-    name: "Yuxi-Know",
+    name: "YU-KNOW",
     short_name: "Yuxi",
     avatar: '/favicon.png',
     logo: '/favicon.png'
@@ -18,7 +18,7 @@ export const useInfoStore = defineStore('info', () => {
 
   // 计算属性 - 品牌信息
   const brand = computed(() => infoConfig.value.brand || {
-    name: "Yuxi-Know",
+    name: "YU-KNOW",
     subtitle: "AI-Powered Knowledge Management Tool",
     description: "Combining knowledge base with knowledge graph for more accurate and comprehensive answers"
   })
@@ -32,7 +32,7 @@ export const useInfoStore = defineStore('info', () => {
 
   // 计算属性 - 页脚信息
   const footer = computed(() => infoConfig.value.footer || {
-    copyright: "© Yuxi-Know 2025 [WIP] v0.12.138 | © Ericc 2025 | MIT License"
+    copyright: "© Yuxi-Know 2025 [WIP] v0.12.138 | © YU-KNOW 2025 | MIT License"
   })
 
   // 动作方法

@@ -36,7 +36,7 @@ export default {
     addSuccess: '追加成功'
   },
   navbar: {
-    brand: 'Yuxi-Know',
+    brand: 'YU-KNOW',
     chat: 'チャット',
     agents: 'AIエージェント',
     knowledgeBase: 'ナレッジベース',
@@ -77,7 +77,7 @@ export default {
     developmentFeature: 'この機能は開発中です。お楽しみに！'
   },
   home: {
-    title: 'Yuxi-Know',
+    title: 'YU-KNOW',
     subtitle: 'AI駆動のナレッジ管理ツール',
     description: '次世代AIナレッジQ&Aシステムを体験し、インテリジェントな会話、高速ナレッジ検索、パーソナライズされたQ&A体験をお楽しみください。',
     powerfulQA: '強力なQ&A機能',

@@ -1,27 +1,27 @@
 ---
 layout: default
-title: 语析 - 基于大模型的知识库与知识图谱问答系统
+title: YU-KNOW - 基于大模型的知识库与知识图谱问答系统
 nav_order: 1
-description: "语析是一个强大的问答平台，结合了大模型 RAG 知识库与知识图谱技术，基于 Llamaindex + VueJS + FastAPI + Neo4j 构建。"
+description: "YU-KNOW是一个强大的问答平台，结合了大模型 RAG 知识库与知识图谱技术，基于 Llamaindex + VueJS + FastAPI + Neo4j 构建。"
 permalink: /
 ---
 
-# 语析 - 基于大模型的知识库与知识图谱问答系统
+# YU-KNOW - 基于大模型的知识库与知识图谱问答系统
 
 <div align="center">
 
 ![](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=ffffff)
 ![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=flat&logo=vuedotjs&logoColor=%234FC08D)
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=flat&logo=fastapi)
-![](https://img.shields.io/github/issues/xerrors/Yuxi-Know?color=F48D73)
+![](https://img.shields.io/github/issues/xerrors/YU-KNOW?color=F48D73)
 ![](https://img.shields.io/github/license/bitcookies/winrar-keygen.svg?logo=github)
-![](https://img.shields.io/github/stars/xerrors/Yuxi-Know)
+![](https://img.shields.io/github/stars/xerrors/YU-KNOW)
 
 </div>
 
 ## 项目概述
 
-语析是一个强大的问答平台，结合了大模型 RAG 知识库与知识图谱技术，基于 Llamaindex + VueJS + FastAPI + Neo4j 构建。
+YU-KNOW是一个强大的问答平台，结合了大模型 RAG 知识库与知识图谱技术，基于 Llamaindex + VueJS + FastAPI + Neo4j 构建。
 
 ### 核心特点
 

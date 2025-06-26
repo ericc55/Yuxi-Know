@@ -3,7 +3,7 @@
     <div class="conversations" :class="{ 'is-open': state.isSidebarOpen }">
       <div class="actions">
         <!-- <div class="action new" @click="addNewConv"><FormOutlined /></div> -->
-         <span class="header-title">Yuxi-Know</span>
+         <span class="header-title">YU-KNOW</span>
         <div class="action close" @click="state.isSidebarOpen = false">
           <PanelLeftClose size="20" color="var(--gray-800)"/>
         </div>
