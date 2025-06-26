@@ -6,6 +6,8 @@ services:
       args:
         http_proxy: ${HTTP_PROXY:-}
         https_proxy: ${HTTPS_PROXY:-}
+        PIP_INDEX_URL: "https://pypi.org/simple"
+        UV_INDEX_URL: "https://pypi.org/simple"
     image: yuxi-api:0.1.0
     container_name: api-dev
     working_dir: /app
