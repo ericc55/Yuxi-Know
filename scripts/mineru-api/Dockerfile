@@ -44,19 +44,19 @@ RUN python3 -m venv /opt/mineru_venv
 
 # Copy the configuration file template and install magic-pdf latest
 RUN /bin/bash -c "source /opt/mineru_venv/bin/activate && \
-    pip3 install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple && \
-    pip3 install -U magic-pdf[full] -i https://mirrors.aliyun.com/pypi/simple"
+    pip3 install --upgrade pip && \
+    pip3 install -U magic-pdf[full]"
 
 # Download models and update the configuration file
 COPY magic-pdf.json /root/magic-pdf.json
-RUN /bin/bash -c "pip3 install modelscope -i https://mirrors.aliyun.com/pypi/simple && \
+RUN /bin/bash -c "pip3 install modelscope && \
     wget https://gcore.jsdelivr.net/gh/opendatalab/MinerU@master/scripts/download_models.py -O download_models.py && \
     python3 download_models.py && \
     sed -i 's|cpu|cuda|g' /root/magic-pdf.json"
 
 COPY app.py /app/app.py
 RUN /bin/bash -c "source /opt/mineru_venv/bin/activate && \
-    pip3 install fastapi uvicorn python-multipart loguru -i https://mirrors.aliyun.com/pypi/simple"
+    pip3 install fastapi uvicorn python-multipart loguru"
 
 
 # Set the entry point to activate the virtual environment and run the command line tool
