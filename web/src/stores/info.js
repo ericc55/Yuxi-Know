@@ -10,29 +10,29 @@ export const useInfoStore = defineStore('info', () => {
 
   // 计算属性 - 组织信息
   const organization = computed(() => infoConfig.value.organization || {
-    name: "江南语析",
-    short_name: "语析",
-    logo: "/favicon.svg",
-    avatar: "/avatar.jpg"
+    name: "Yuxi-Know",
+    short_name: "Yuxi",
+    avatar: '/logo.png',
+    logo: '/logo.png'
   })
 
   // 计算属性 - 品牌信息
-  const branding = computed(() => infoConfig.value.branding || {
-    title: "Yuxi-Know",
-    subtitle: "大模型驱动的知识库管理工具",
-    description: "结合知识库与知识图谱，提供更准确、更全面的回答"
+  const brand = computed(() => infoConfig.value.brand || {
+    name: "Yuxi-Know",
+    subtitle: "AI-Powered Knowledge Management Tool",
+    description: "Combining knowledge base with knowledge graph for more accurate and comprehensive answers"
   })
 
   // 计算属性 - 功能特性
   const features = computed(() => infoConfig.value.features || [
-    "📚 灵活知识库",
-    "🕸️ 知识图谱集成",
-    "🤖 多模型支持"
+    "📚 Flexible Knowledge Base",
+    "🕸️ Knowledge Graph Integration", 
+    "🤖 Multi-Model Support"
   ])
 
   // 计算属性 - 页脚信息
   const footer = computed(() => infoConfig.value.footer || {
-    copyright: "© 江南语析 2025 [WIP] v0.12.138"
+    copyright: "© Yuxi-Know 2025 [WIP] v0.12.138"
   })
 
   // 动作方法
@@ -96,7 +96,7 @@ export const useInfoStore = defineStore('info', () => {
 
     // 计算属性
     organization,
-    branding,
+    brand,
     features,
     footer,
 

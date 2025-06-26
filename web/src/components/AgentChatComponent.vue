@@ -95,7 +95,7 @@
               <div></div>
               <div></div>
             </div>
-            <span class="generating-text">正在生成回复...</span>
+            <span class="generating-text">{{ t('chat.generatingReply') }}</span>
           </div>
         </div>
       </div>
@@ -133,6 +133,7 @@ import ChatSidebarComponent from '@/components/ChatSidebarComponent.vue'
 import RefsComponent from '@/components/RefsComponent.vue'
 import { chatApi, threadApi } from '@/apis/auth_api'
 import { PanelLeftOpen, MessageSquarePlus } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
 
 // 新增props属性，允许父组件传入agentId
 const props = defineProps({
@@ -870,6 +871,8 @@ const mergeMessageChunk = (chunks) => {
   }
   return result;
 }
+
+const { t } = useI18n();
 
 </script>
 

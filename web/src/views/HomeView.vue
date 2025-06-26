@@ -6,25 +6,30 @@
           <img :src="infoStore.organization.logo" :alt="infoStore.organization.name" class="logo-img" />
           <span style="font-size: 1.3rem; font-weight: bold;">{{ infoStore.organization.name }}</span>
         </div>
-        <div class="github-link">
-          <a href="https://github.com/xerrors/Yuxi-Know" target="_blank">
-            <svg height="24" width="24" viewBox="0 0 16 16" version="1.1">
-              <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-            </svg>
-            <span class="stars-count">{{ isLoadingStars ? '加载中...' : githubStars }} ⭐</span>
-          </a>
+        <div class="header-actions">
+          <!-- 语言切换器 -->
+          <div class="language-switcher">
+            <LanguageSwitcher />
+          </div>
+          <div class="github-link">
+            <a href="https://github.com/xerrors/Yuxi-Know" target="_blank">
+              <svg height="24" width="24" viewBox="0 0 16 16" version="1.1">
+                <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+              </svg>
+              <span class="stars-count">{{ isLoadingStars ? t('common.loading') : githubStars }} ⭐</span>
+            </a>
+          </div>
         </div>
       </div>
 
       <div class="hero-content">
-        <h1 class="title">{{ infoStore.branding.title }}</h1>
-        <div class="description">
-          <p class="subtitle">{{ infoStore.branding.subtitle }}</p>
-          <p class="features">
-            <span v-for="feature in infoStore.features" :key="feature">{{ feature }}</span>
-          </p>
+        <h1>{{ infoStore.brand.name }}</h1>
+        <p class="subtitle">{{ infoStore.brand.subtitle }}</p>
+        <p class="description">{{ infoStore.brand.description }}</p>
+        <div class="features">
+          <span v-for="feature in infoStore.features" :key="feature">{{ feature }}</span>
         </div>
-        <button class="start-button" @click="goToChat">开始对话</button>
+        <button class="start-button" @click="goToChat">{{ t('home.startChat') }}</button>
       </div>
     </div>
 
@@ -33,8 +38,8 @@
         <img src="/home.png" alt="系统预览" />
         <div class="preview-overlay">
           <div class="overlay-content">
-            <h3>强大的问答能力</h3>
-            <p>{{ infoStore.branding.description }}</p>
+            <h3>{{ t('home.powerfulQA') }}</h3>
+            <p>{{ t('home.description') }}</p>
           </div>
         </div>
       </div>
@@ -49,15 +54,18 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { useInfoStore } from '@/stores/info'
 import { chatApi } from '@/apis/auth_api'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
 const infoStore = useInfoStore()
 const githubStars = ref(0)
 const isLoadingStars = ref(false)
+const { t } = useI18n()
 
 const goToChat = async () => {
   // 检查用户是否登录
@@ -90,7 +98,7 @@ const goToChat = async () => {
       } else {
         // 没有可用智能体，回退到chat页面
         router.push("/chat");
-}
+      }
     }
   } catch (error) {
     console.error('跳转到智能体页面失败:', error);
@@ -169,6 +177,40 @@ onMounted(async () => {
   .logo-img {
     height: 2rem;
     margin-right: 0.6rem;
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.language-switcher {
+  :deep(.language-switcher) {
+    padding: 0.6rem 1.2rem;
+    border-radius: 2rem;
+    background-color: rgba(255, 255, 255, 0.4);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .current-language {
+      color: #333;
+      font-weight: 600;
+    }
+  }
+
+  :deep(.ant-dropdown-menu) {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -341,6 +383,29 @@ footer {
 
   .logo {
     font-size: 1.2rem;
+  }
+
+  .header-actions {
+    gap: 0.5rem;
+  }
+
+  .language-switcher {
+    :deep(.language-switcher) {
+      padding: 0.4rem 0.8rem;
+      
+      .current-language {
+        font-size: 0.9rem;
+        
+        .name {
+          display: none; // Hide language name on mobile, show only flag
+        }
+      }
+    }
+  }
+
+  .github-link a {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
   }
 
   .title {

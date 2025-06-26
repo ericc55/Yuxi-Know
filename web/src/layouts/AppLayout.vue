@@ -1,6 +1,7 @@
 <script setup>
 import { ref, reactive, KeepAlive, onMounted, computed } from 'vue'
 import { RouterLink, RouterView, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import {
   GithubOutlined,
   BugOutlined,
@@ -13,7 +14,9 @@ import { useDatabaseStore } from '@/stores/database'
 import { useInfoStore } from '@/stores/info'
 import DebugComponent from '@/components/DebugComponent.vue'
 import UserInfoComponent from '@/components/UserInfoComponent.vue'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 
+const { t } = useI18n()
 const configStore = useConfigStore()
 const databaseStore = useDatabaseStore()
 const infoStore = useInfoStore()
@@ -67,30 +70,30 @@ const route = useRoute()
 console.log(route)
 
 // 下面是导航菜单部分，添加智能体项
-const mainList = [{
-    name: '对话',
+const mainList = computed(() => [{
+    name: t('navbar.chat'),
     path: '/chat',
     icon: MessageSquareMore,
     activeIcon: MessageSquareMore,
   }, {
-    name: '智能体',
+    name: t('navbar.agents'),
     path: '/agent',
     icon: Bot,
     activeIcon: Bot,
   }, {
-    name: '图谱',
+    name: t('navbar.knowledgeGraph'),
     path: '/graph',
     icon: Waypoints,
     activeIcon: Waypoints,
     // hidden: !configStore.config.enable_knowledge_graph,
   }, {
-    name: '知识库',
+    name: t('navbar.knowledgeBase'),
     path: '/database',
     icon: LibraryBig,
     activeIcon: LibraryBig,
     // hidden: !configStore.config.enable_knowledge_base,
   }
-]
+])
 </script>
 
 <template>
@@ -98,7 +101,7 @@ const mainList = [{
     <div class="debug-panel" >
       <a-float-button
         @click="layoutSettings.showDebug = !layoutSettings.showDebug"
-        tooltip="调试面板"
+        :tooltip="t('common.debug')"
         :style="{
           right: '12px',
         }"
@@ -109,7 +112,7 @@ const mainList = [{
       </a-float-button>
       <a-drawer
         v-model:open="layoutSettings.showDebug"
-        title="调试面板"
+        :title="t('common.debugPanel')"
         width="800"
         :contentWrapperStyle="{ maxWidth: '100%'}"
         placement="right"
@@ -138,10 +141,10 @@ const mainList = [{
         </RouterLink>
 
         <a-tooltip placement="right">
-          <template #title>后端疑似没有正常启动或者正在繁忙中，请刷新一下或者检查 docker logs api-dev</template>
+          <template #title>{{ t('errors.serverError') }}</template>
           <div class="nav-item warning" v-if="!configStore.config._config_items">
             <component class="icon" :is="ExclamationCircleOutlined" />
-            <span class="text">警告</span>
+            <span class="text">{{ t('common.warning') }}</span>
           </div>
         </a-tooltip>
       </div>
@@ -150,7 +153,7 @@ const mainList = [{
 
       <div class="github nav-item">
         <a-tooltip placement="right">
-          <template #title>欢迎 Star</template>
+          <template #title>{{ t('home.githubStars') }}</template>
           <a href="https://github.com/xerrors/Yuxi-Know" target="_blank" class="github-link">
             <GithubOutlined class="icon" style="color: #222;"/>
             <span v-if="githubStars > 0" class="github-stars">
@@ -171,22 +174,30 @@ const mainList = [{
       <!-- 用户信息组件 -->
       <div class="nav-item user-info">
         <a-tooltip placement="right">
-          <template #title>用户信息</template>
+          <template #title>{{ t('navbar.user') }}</template>
           <UserInfoComponent />
+        </a-tooltip>
+      </div>
+
+      <!-- 语言切换器 -->
+      <div class="nav-item language-switcher">
+        <a-tooltip placement="right">
+          <template #title>{{ t('navbar.switchLanguage') }}</template>
+          <LanguageSwitcher />
         </a-tooltip>
       </div>
 
       <RouterLink class="nav-item setting" to="/setting" active-class="active">
         <a-tooltip placement="right">
-          <template #title>设置</template>
+          <template #title>{{ t('navbar.settings') }}</template>
           <Settings />
         </a-tooltip>
       </RouterLink>
     </div>
     <div class="header-mobile">
-      <RouterLink to="/chat" class="nav-item" active-class="active">对话</RouterLink>
-      <RouterLink to="/database" class="nav-item" active-class="active">知识</RouterLink>
-      <RouterLink to="/setting" class="nav-item" active-class="active">设置</RouterLink>
+      <RouterLink to="/chat" class="nav-item" active-class="active">{{ t('navbar.chat') }}</RouterLink>
+      <RouterLink to="/database" class="nav-item" active-class="active">{{ t('navbar.knowledgeBase') }}</RouterLink>
+      <RouterLink to="/setting" class="nav-item" active-class="active">{{ t('navbar.settings') }}</RouterLink>
     </div>
     <router-view v-slot="{ Component, route }" id="app-router-view">
       <keep-alive v-if="route.meta.keepAlive !== false">

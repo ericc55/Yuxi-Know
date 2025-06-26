@@ -51,6 +51,7 @@ import {
   LikeOutlined,
   DislikeOutlined,
 } from '@ant-design/icons-vue'
+import { useI18n } from 'vue-i18n'
 
 const emit = defineEmits(['retry', 'openRefs']);
 const props = defineProps({
@@ -70,6 +71,8 @@ const msg = ref(props.message)
 // 使用 useClipboard 实现复制功能
 const { copy, isSupported } = useClipboard()
 
+const t = useI18n().t
+
 const showKey = (key) => {
   if (props.showRefs === true) {
     return true
@@ -82,14 +85,14 @@ const copyText = async (text) => {
   if (isSupported) {
     try {
       await copy(text)
-      message.success('文本已复制到剪贴板')
-    } catch (error) {
-      console.error('复制失败:', error)
-      message.error('复制失败，请手动复制')
+      message.success(t('messages.copySuccess'))
+    } catch (err) {
+      console.error('Failed to copy: ', err)
+      message.error(t('messages.copyFailed'))
     }
   } else {
-    console.warn('浏览器不支持自动复制')
-    message.warning('浏览器不支持自动复制，请手动复制')
+    // Fallback for browsers that don't support navigator.clipboard
+    message.warning(t('messages.copyNotSupported'))
   }
 }
 

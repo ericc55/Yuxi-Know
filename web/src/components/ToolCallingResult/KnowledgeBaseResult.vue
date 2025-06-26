@@ -3,7 +3,10 @@
     <div class="kb-header">
       <h4><FileTextOutlined /> 知识库检索结果</h4>
       <div class="result-summary">
-        找到 {{ data.length }} 个相关文档片段，来自 {{ fileGroups.length }} 个文件
+        {{ t('knowledgeBaseResult.found', { 
+          segmentCount: data.length, 
+          fileCount: fileGroups.length 
+        }) }}
       </div>
     </div>
 
@@ -108,6 +111,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { FileTextOutlined, FileOutlined, DownOutlined, EyeOutlined, DatabaseOutlined } from '@ant-design/icons-vue'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
   data: {
@@ -115,6 +119,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const { t } = useI18n()
 
 // 管理展开状态
 const expandedFiles = ref(new Set())

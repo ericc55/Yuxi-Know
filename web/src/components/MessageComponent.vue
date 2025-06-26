@@ -14,7 +14,7 @@
           <template #expandIcon="{ isActive }">
             <caret-right-outlined :rotate="isActive ? 90 : 0" />
           </template>
-          <a-collapse-panel key="show" :header="message.status=='reasoning' ? '正在思考...' : '推理过程'" class="reasoning-header">
+          <a-collapse-panel key="show" :header="message.status=='reasoning' ? t('components.thinking') : t('components.reasoningProcess')" class="reasoning-header">
             <p class="reasoning-content">{{ message.reasoning_content.trim() }}</p>
           </a-collapse-panel>
         </a-collapse>
@@ -29,16 +29,16 @@
 
       <!-- 检索中状态 (ChatComponent特有) -->
       <div v-else-if="message.status === 'searching' && isProcessing" class="searching-msg">
-        <i>正在检索……</i>
+        <i>{{ t('chat.searching') }}</i>
       </div>
 
       <!-- 生成中状态 (ChatComponent特有) -->
       <div v-else-if="message.status === 'generating' && isProcessing" class="searching-msg">
-        <i>正在生成……</i>
+        <i>{{ t('chat.generating') }}</i>
       </div>
 
       <div v-else-if="message.status === 'error'" class="err-msg" @click="$emit('retry')">
-        请求错误，请重试。{{ message.message }}
+        {{ t('messages.requestFailed') }}{{ message.message ? ', ' + message.message : '' }}
       </div>
 
       <!-- 消息内容 -->
@@ -57,12 +57,12 @@
       <slot v-else-if="message.toolCalls && Object.keys(message.toolCalls).length > 0" name="tool-calls"></slot>
 
       <div v-else-if="!isProcessing" class="err-msg" @click="$emit('retry')">
-        请求错误，请重试。{{ message.message }}
+        {{ t('messages.requestFailed') }}{{ message.message ? ', ' + message.message : '' }}
       </div>
 
       <div v-if="message.isStoppedByUser" class="retry-hint">
-        你停止生成了本次回答
-        <span class="retry-link" @click="emit('retryStoppedMessage', message.id)">重新编辑问题</span>
+        {{ t('chat.stoppedByUser') }}
+        <span class="retry-link" @click="emit('retryStoppedMessage', message.id)">{{ t('chat.retryStoppedMessage') }}</span>
       </div>
 
 
@@ -81,10 +81,12 @@
 import { computed, ref } from 'vue';
 import { CaretRightOutlined } from '@ant-design/icons-vue';
 import RefsComponent from '@/components/RefsComponent.vue'
-
+import { useI18n } from 'vue-i18n'
 
 import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css';
+
+const { t } = useI18n()
 
 const props = defineProps({
   // 消息角色：'user'|'assistant'|'sent'|'received'
@@ -119,13 +121,13 @@ const props = defineProps({
 });
 
 const editorRef = ref()
-const statusDefination = {
-  init: '初始化',
-  loading: '加载中',
-  reasoning: '推理中',
-  generating: '生成中',
-  error: '错误'
-}
+const statusLabels = computed(() => ({
+  init: t('components.statusLabels.init'),
+  loading: t('components.statusLabels.loading'),
+  reasoning: t('components.statusLabels.reasoning'),
+  generating: t('components.statusLabels.generating'),
+  error: t('components.statusLabels.error')
+}));
 
 const emit = defineEmits(['retry', 'retryStoppedMessage', 'openRefs']);
 

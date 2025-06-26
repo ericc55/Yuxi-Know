@@ -20,7 +20,7 @@
               :value="name"
             >
               <div class="agent-option">
-                智能体：{{ agent.name }}
+                {{ t('agents.agent') }}：{{ agent.name }}
                 <StarFilled v-if="name === defaultAgentId" class="default-icon" />
               </div>
             </a-select-option>
@@ -37,10 +37,10 @@
             v-if="selectedAgentId"
           >
             <template #icon><LinkOutlined /></template>
-            打开独立页面
+            {{ t('agents.openIndependentPage') }}
           </a-button>
 
-          <a-tooltip :title="isDefaultAgent ? '当前为默认智能体' : '设为默认智能体'" placement="left">
+          <a-tooltip :title="isDefaultAgent ? t('agents.currentIsDefault') : t('agents.setAsDefault')" placement="left">
             <a-button
               class="header-button primary-action"
               @click="setAsDefaultAgent"
@@ -58,13 +58,13 @@
       <!-- 左侧智能体列表侧边栏 -->
       <div class="sidebar" :class="{ 'is-open': state.agentSiderbarConfigOpen }">
         <div class="agent-info">
-          <h3 @click="toggleDebugMode">描述</h3>
+          <h3 @click="toggleDebugMode">{{ t('agents.description') }}</h3>
           <p>{{ selectedAgent.description }}</p>
           <pre v-if="state.debug_mode">{{ selectedAgent }}</pre>
 
           <!-- 添加requirements显示部分 -->
           <div v-if="agents[selectedAgentId]?.requirements && agents[selectedAgentId]?.requirements.length > 0" class="info-section">
-            <h3>所需环境变量:</h3>
+            <h3>{{ t('agents.requiredEnvVars') }}</h3>
             <div class="requirements-list">
               <a-tag v-for="req in agents[selectedAgentId].requirements" :key="req">
                 {{ req }}
@@ -77,8 +77,8 @@
           <div v-if="selectedAgentId && configSchema" class="config-modal-content">
             <!-- 配置表单 -->
             <a-form :model="agentConfig" layout="vertical">
-              <a-alert  v-if="state.isEmptyConfig" type="warning" message="该智能体没有配置项" show-icon/>
-              <a-alert v-if="!selectedAgent.has_checkpointer" type="error" message="该智能体没有配置 Checkpointer，功能无法正常使用，参考：https://langchain-ai.github.io/langgraph/concepts/persistence/" show-icon/>
+              <a-alert v-if="state.isEmptyConfig" type="warning" :message="t('agents.noConfiguration')" show-icon/>
+              <a-alert v-if="!selectedAgent.has_checkpointer" type="error" :message="t('agents.noCheckpointer')" show-icon/>
               <!-- 统一显示所有配置项 -->
               <template v-for="(value, key) in configurableItems" :key="key">
                 <a-form-item
@@ -118,9 +118,9 @@
                                     <!-- 多选标签卡片 -->
                   <div v-else-if="value?.options && value?.type === 'list'" class="multi-select-cards">
                     <div class="multi-select-label">
-                      <span>已选择 {{ getSelectedCount(key) }} 项</span>
+                      <span>{{ t('agents.selectedCount', { count: getSelectedCount(key) }) }}</span>
                       <a-button type="link" size="small" @click="clearSelection(key)" v-if="getSelectedCount(key) > 0" >
-                        清空
+                        {{ t('agents.clearAll') }}
                       </a-button>
                     </div>
                     <div class="options-grid">
@@ -157,8 +157,8 @@
               <!-- 弹窗底部按钮 -->
               <div class="form-actions" v-if="!state.isEmptyConfig">
                 <div class="form-actions-left">
-                  <a-button type="primary" @click="saveConfig">保存并发布配置</a-button>
-                  <a-button @click="resetConfig">重置</a-button>
+                  <a-button type="primary" @click="saveConfig">{{ t('agents.saveAndPublish') }}</a-button>
+                  <a-button @click="resetConfig">{{ t('agents.reset') }}</a-button>
                 </div>
               </div>
             </a-form>
@@ -184,6 +184,7 @@
 <script setup>
 import { ref, onMounted, reactive, watch, computed, h } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import {
   CloseOutlined,
   SettingOutlined,
@@ -204,6 +205,7 @@ import { systemConfigApi } from '@/apis/admin_api';
 // 路由
 const router = useRouter();
 const userStore = useUserStore();
+const { t } = useI18n();
 
 // 状态
 const agents = ref({});
@@ -237,10 +239,10 @@ const setAsDefaultAgent = async () => {
   try {
     await systemConfigApi.setDefaultAgent(selectedAgentId.value);
     defaultAgentId.value = selectedAgentId.value;
-    message.success('已将当前智能体设为默认');
+    message.success(t('agents.setAsDefaultSuccess'));
   } catch (error) {
     console.error('设置默认智能体错误:', error);
-    message.error(error.message || '设置默认智能体时发生错误');
+    message.error(error.message || t('agents.setAsDefaultError'));
   }
 };
 
@@ -381,7 +383,7 @@ const handleModelChange = (data) => {
 // 保存配置
 const saveConfig = async () => {
   if (!selectedAgentId.value) {
-    message.error('没有选择智能体');
+    message.error(t('agents.noAgentSelected'));
     return;
   }
 
@@ -389,18 +391,18 @@ const saveConfig = async () => {
     // 保存配置到服务器
     await systemConfigApi.saveAgentConfig(selectedAgentId.value, agentConfig.value);
     // 提示保存成功
-    message.success('配置已保存到服务器');
+    message.success(t('agents.configSaved'));
     console.log("保存配置:", agentConfig.value);
   } catch (error) {
     console.error('保存配置到服务器出错:', error);
-    message.error('保存配置到服务器失败');
+    message.error(t('agents.configSaveFailed'));
   }
 };
 
 // 重置配置
 const resetConfig = async () => {
   if (!selectedAgentId.value) {
-    message.error('没有选择智能体');
+    message.error(t('agents.noAgentSelected'));
     return;
   }
 
@@ -409,10 +411,10 @@ const resetConfig = async () => {
     await systemConfigApi.saveAgentConfig(selectedAgentId.value, {});
     // 重新加载默认配置
     await loadAgentConfig();
-    message.info('配置已重置');
+    message.info(t('agents.configReset'));
   } catch (error) {
     console.error('重置配置出错:', error);
-    message.error('重置配置失败');
+    message.error(t('agents.configResetFailed'));
   }
 };
 
@@ -468,7 +470,7 @@ const getConfigLabel = (key, value) => {
 // 获取占位符
 const getPlaceholder = (key, value) => {
   // 返回描述作为占位符
-  return `（默认: ${value.default}）` ;
+  return t('agents.defaultValue', { value: value.default });
 };
 
 // 跳转到独立智能体页面

@@ -1,92 +1,100 @@
 <template>
   <div>
-    <div class="model-provider-card custom-models-card">
-      <div class="card-header">
-        <h3>自定义模型</h3>
+    <!-- Loading state -->
+    <div v-if="isLoading" class="loading-container">
+      <a-spin :indicator="h(LoadingOutlined, { style: { fontSize: '24px', color: 'var(--main-color)' }})" />
+      <div class="loading-text">{{ t('common.loading') }}</div>
+    </div>
+    
+    <!-- Main content - only render when not loading -->
+    <div v-else>
+      <div class="model-provider-card custom-models-card">
+        <div class="card-header">
+          <h3>自定义模型</h3>
+        </div>
+        <div class="card-body">
+          <div class="custom-model" v-for="(item, key) in configStore.config.custom_models" :key="item.custom_id">
+            <div class="card-models__header">
+              <div class="name" :title="item.name">{{ item.name }}</div>
+              <div class="action">
+                <a-popconfirm
+                  :title="t('components.modelProviders.confirmDeleteModel')"
+                  placement="left"
+                  :ok-text="t('components.modelProviders.confirmDelete')"
+                  :cancel-text="t('components.modelProviders.cancel')"
+                  @confirm="handleDeleteCustomModel(item.custom_id)"
+                >
+                  <a-button type="text" :disabled="configStore.config.model_name == item.name" @click.stop><DeleteOutlined /></a-button>
+                </a-popconfirm>
+                <a-button type="text" @click.stop="prepareToEditCustomModel(item)"><EditOutlined /></a-button>
+              </div>
+            </div>
+            <div class="api_base">{{ item.api_base }}</div>
+          </div>
+          <div class="card-models custom-model add-model" @click="prepareToAddCustomModel">
+            <div class="card-models__header">
+              <div class="name"> + 添加模型</div>
+            </div>
+            <div class="api_base">添加兼容 OpenAI 的模型</div>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        <div class="custom-model" v-for="(item, key) in configStore.config.custom_models" :key="item.custom_id">
-          <div class="card-models__header">
-            <div class="name" :title="item.name">{{ item.name }}</div>
-            <div class="action">
-              <a-popconfirm
-                title="确认删除该模型?"
-                @confirm="handleDeleteCustomModel(item.custom_id)"
-                okText="确认删除"
-                cancelText="取消"
-                ok-type="danger"
-                :disabled="configStore.config.model_name == item.name"
-              >
-                <a-button type="text" :disabled="configStore.config.model_name == item.name" @click.stop><DeleteOutlined /></a-button>
-              </a-popconfirm>
-              <a-button type="text" @click.stop="prepareToEditCustomModel(item)"><EditOutlined /></a-button>
+      <div class="model-provider-card configured-provider" v-for="(item, key) in modelKeys" :key="key">
+        <div class="card-header" @click="toggleExpand(item)">
+          <div :class="{'model-icon': true, 'available': modelStatus[item]}">
+            <img :src="modelIcons[item] || modelIcons.default" :alt="t('components.modelProviders.modelIcon')">
+          </div>
+          <div class="model-title-container">
+            <h3>{{ modelNames[item]?.name || item }}</h3>
+          </div>
+          <a-button
+            type="text"
+            class="expand-button"
+            @click.stop="openProviderConfig(item)"
+            title="配置模型提供商"
+          >
+            <SettingOutlined />
+          </a-button>
+          <a-button
+            type="text"
+            class="expand-button"
+            @click.stop="toggleExpand(item)"
+          >
+            <span class="icon-wrapper" :class="{'rotated': expandedModels[item]}">
+              <DownCircleOutlined />
+            </span>
+          </a-button>
+        </div>
+        <div class="card-body-wrapper" :class="{'expanded': expandedModels[item]}">
+          <div class="card-body" v-if="modelStatus[item]">
+            <div class="card-models" v-for="(model, idx) in modelNames[item]?.models || []" :key="idx">
+              <div class="model_name">{{ model }}</div>
             </div>
           </div>
-          <div class="api_base">{{ item.api_base }}</div>
         </div>
-        <div class="card-models custom-model add-model" @click="prepareToAddCustomModel">
-          <div class="card-models__header">
-            <div class="name"> + 添加模型</div>
+      </div>
+      <div class="model-provider-card unconfigured-provider" v-for="(item, key) in notModelKeys" :key="key">
+        <div class="card-header">
+          <div class="model-icon">
+            <img :src="modelIcons[item] || modelIcons.default" alt="模型图标">
           </div>
-          <div class="api_base">添加兼容 OpenAI 的模型</div>
-        </div>
-      </div>
-    </div>
-    <div class="model-provider-card configured-provider" v-for="(item, key) in modelKeys" :key="key">
-      <div class="card-header" @click="toggleExpand(item)">
-        <div :class="{'model-icon': true, 'available': modelStatus[item]}">
-          <img :src="modelIcons[item] || modelIcons.default" alt="模型图标">
-        </div>
-        <div class="model-title-container">
-          <h3>{{ modelNames[item].name }}</h3>
-        </div>
-        <a-button
-          type="text"
-          class="expand-button"
-          @click.stop="openProviderConfig(item)"
-          title="配置模型提供商"
-        >
-          <SettingOutlined />
-        </a-button>
-        <a-button
-          type="text"
-          class="expand-button"
-          @click.stop="toggleExpand(item)"
-        >
-          <span class="icon-wrapper" :class="{'rotated': expandedModels[item]}">
-            <DownCircleOutlined />
-          </span>
-        </a-button>
-      </div>
-      <div class="card-body-wrapper" :class="{'expanded': expandedModels[item]}">
-        <div class="card-body" v-if="modelStatus[item]">
-          <div class="card-models" v-for="(model, idx) in modelNames[item].models" :key="idx">
-            <div class="model_name">{{ model }}</div>
+          <div class="model-title-container">
+            <h3 style="font-weight: 400">{{ modelNames[item]?.name || item }}</h3>
+            <a :href="modelNames[item]?.url" target="_blank" class="model-url" v-if="modelNames[item]?.url">
+              <InfoCircleOutlined />
+            </a>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="model-provider-card unconfigured-provider" v-for="(item, key) in notModelKeys" :key="key">
-      <div class="card-header">
-        <div class="model-icon">
-          <img :src="modelIcons[item] || modelIcons.default" alt="模型图标">
-        </div>
-        <div class="model-title-container">
-          <h3 style="font-weight: 400">{{ modelNames[item].name }}</h3>
-          <a :href="modelNames[item].url" target="_blank" class="model-url">
-            <InfoCircleOutlined />
-          </a>
-        </div>
-        <a-button
-          type="text"
-          class="config-button"
-          @click.stop="openProviderConfig(item)"
-          title="配置模型提供商"
-        >
-          <SettingOutlined />
-        </a-button>
-        <div class="missing-keys">
-          需配置<span v-for="(key, idx) in modelNames[item].env" :key="idx">{{ key }}</span>
+          <a-button
+            type="text"
+            class="config-button"
+            @click.stop="openProviderConfig(item)"
+            title="配置模型提供商"
+          >
+            <SettingOutlined />
+          </a-button>
+          <div class="missing-keys">
+            需配置<span v-for="(key, idx) in modelNames[item]?.env || []" :key="idx">{{ key }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -95,25 +103,25 @@
     <a-modal
       class="custom-model-modal"
       v-model:open="customModel.visible"
-      :title="customModel.modelTitle"
+      :title="t('components.modelProviders.configureModel', { providerName: providerConfig.providerName })"
       @ok="handleAddOrEditCustomModel"
       @cancel="handleCancelCustomModel"
-      :okText="'确认'"
-      :cancelText="'取消'"
+      :okText="t('components.modelProviders.saveConfig')"
+      :cancelText="t('components.modelProviders.cancel')"
       :okButtonProps="{disabled: !customModel.name || !customModel.api_base}"
       :ok-type="'primary'"
     >
       <p>添加的模型是兼容 OpenAI 的模型，比如 vllm，Ollama。</p>
       <a-form :model="customModel" layout="vertical">
-        <a-form-item label="模型名称" name="name" :rules="[{ required: true, message: '请输入模型名称' }]">
+        <a-form-item :label="t('components.modelProviders.modelName')" name="name" :rules="[{ required: true, message: t('components.modelProviders.enterModelName') }]">
           <p class="form-item-description">调用的模型的名称</p>
           <a-input v-model:value="customModel.name" :disabled="customModel.edit_type == 'edit'"/>
         </a-form-item>
-        <a-form-item label="API Base" name="api_base" :rules="[{ required: true, message: '请输入API Base' }]">
+        <a-form-item :label="t('components.modelProviders.apiBase')" name="api_base" :rules="[{ required: true, message: t('components.modelProviders.enterApiBase') }]">
           <p class="form-item-description">比如 <code>http://localhost:11434/v1</code></p>
           <a-input v-model:value="customModel.api_base" />
         </a-form-item>
-        <a-form-item label="API KEY" name="api_key">
+        <a-form-item :label="t('components.modelProviders.apiKey')" name="api_key">
           <a-input-password v-model:value="customModel.api_key" :visibilityToggle="true" autocomplete="new-password"/>
         </a-form-item>
       </a-form>
@@ -123,11 +131,11 @@
     <a-modal
       class="provider-config-modal"
       v-model:open="providerConfig.visible"
-      :title="`配置${providerConfig.providerName}模型`"
+      :title="t('components.modelProviders.configureProvider')"
       @ok="saveProviderConfig"
       @cancel="cancelProviderConfig"
-      :okText="'保存配置'"
-      :cancelText="'取消'"
+      :okText="t('components.modelProviders.confirm')"
+      :cancelText="t('components.modelProviders.cancel')"
       :ok-type="'primary'"
       :width="800"
     >
@@ -145,7 +153,7 @@
           <div class="model-search">
             <a-input
               v-model:value="providerConfig.searchQuery"
-              placeholder="搜索模型..."
+              :placeholder="t('components.modelProviders.searchModels')"
               allow-clear
             >
               <template #prefix>
@@ -173,9 +181,9 @@
             </div>
           </div>
           <div v-if="providerConfig.allModels.length === 0" class="modal-no-models">
-            <a-alert v-if="!modelStatus[providerConfig.provider]" type="warning" message="请在 src/.env 中配置对应的 APIKEY，并重新启动服务" />
+            <a-alert v-if="!modelStatus[providerConfig.provider]" type="warning" :message="t('components.modelProviders.configureApiKey')" />
             <div v-else>
-              <a-alert type="warning" message="该提供商暂未适配获取模型列表的方法，如果需要添加模型，请在 src/static/models.private.yml 中添加。" />
+              <a-alert type="warning" :message="t('components.modelProviders.providerNotSupported')" />
               <img src="@/assets/pics/guides/how-to-add-models.png" alt="添加模型指引" style="width: 100%; height: 100%;">
             </div>
           </div>
@@ -200,12 +208,17 @@ import {
 import { useConfigStore } from '@/stores/config';
 import { modelIcons } from '@/utils/modelIcon';
 import { chatApi } from '@/apis/auth_api';
+import { useI18n } from 'vue-i18n';
 
 const configStore = useConfigStore();
+const { t } = useI18n();
 
-// 计算属性
-const modelNames = computed(() => configStore.config?.model_names);
-const modelStatus = computed(() => configStore.config?.model_provider_status);
+// Optimize loading - check for critical data only
+const isLoading = computed(() => !configStore.config?.model_names && !configStore.config?.custom_models);
+
+// 计算属性 - Add safety checks
+const modelNames = computed(() => configStore.config?.model_names || {});
+const modelStatus = computed(() => configStore.config?.model_provider_status || {});
 
 // 自定义模型相关状态
 const customModel = reactive({
@@ -230,27 +243,35 @@ const providerConfig = reactive({
   searchQuery: '',
 });
 
-// 筛选 modelStatus 中为真的key
+// 筛选 modelStatus 中为真的key - Add safety checks
 const modelKeys = computed(() => {
-  return Object.keys(modelStatus.value || {}).filter(key => modelStatus.value[key]);
+  if (!modelStatus.value || typeof modelStatus.value !== 'object') {
+    return [];
+  }
+  return Object.keys(modelStatus.value).filter(key => modelStatus.value[key]);
 });
 
-// 筛选 modelStatus 中为假的key
+// 筛选 modelStatus 中为假的key - Add safety checks
 const notModelKeys = computed(() => {
-  return Object.keys(modelStatus.value || {}).filter(key => !modelStatus.value[key]);
+  if (!modelStatus.value || typeof modelStatus.value !== 'object') {
+    return [];
+  }
+  return Object.keys(modelStatus.value).filter(key => !modelStatus.value[key]);
 });
 
 // 模型展开状态管理
 const expandedModels = reactive({});
 
-// 监听 modelKeys 变化，确保新添加的模型也是默认展开状态
+// 优化的watch - Remove debouncing for faster loading
 watch(modelKeys, (newKeys) => {
-  newKeys.forEach(key => {
-    if (expandedModels[key] === undefined) {
-      expandedModels[key] = true;
-    }
-  });
-}, { immediate: true });
+  if (Array.isArray(newKeys)) {
+    newKeys.forEach(key => {
+      if (key && expandedModels[key] === undefined) {
+        expandedModels[key] = true;
+      }
+    });
+  }
+}, { immediate: true, flush: 'sync' }); // Restore immediate flag for faster initial load
 
 // 生成随机哈希值
 const generateRandomHash = (length) => {
@@ -264,8 +285,14 @@ const generateRandomHash = (length) => {
 
 // 处理自定义模型删除
 const handleDeleteCustomModel = (customId) => {
-  const updatedModels = configStore.config.custom_models.filter(item => item.custom_id !== customId);
-  configStore.setConfigValue('custom_models', updatedModels);
+  try {
+    const currentModels = configStore.config?.custom_models || [];
+    const updatedModels = currentModels.filter(item => item.custom_id !== customId);
+    configStore.setConfigValue('custom_models', updatedModels);
+  } catch (error) {
+    console.error('删除自定义模型失败:', error);
+    message.error('删除模型失败');
+  }
 };
 
 // 准备编辑自定义模型
@@ -304,42 +331,51 @@ const handleCancelCustomModel = () => {
 // 添加或编辑自定义模型
 const handleAddOrEditCustomModel = async () => {
   if (!customModel.name || !customModel.api_base) {
-    message.error('请填写完整的模型名称和API Base信息。');
+    message.error(t('components.modelProviders.completeModelInfo'));
     return;
   }
 
-  let custom_models = configStore.config.custom_models || [];
+  try {
+    let custom_models = configStore.config?.custom_models || [];
 
-  const model_info = {
-    custom_id: customModel.custom_id || `${customModel.name}-${generateRandomHash(4)}`,
-    name: customModel.name,
-    api_key: customModel.api_key,
-    api_base: customModel.api_base,
-  };
+    const model_info = {
+      custom_id: customModel.custom_id || `${customModel.name}-${generateRandomHash(4)}`,
+      name: customModel.name,
+      api_key: customModel.api_key,
+      api_base: customModel.api_base,
+    };
 
-  if (customModel.edit_type === 'add') {
-    if (custom_models.find(item => item.custom_id === customModel.custom_id)) {
-      message.error('模型ID已存在');
-      return;
+    if (customModel.edit_type === 'add') {
+      if (custom_models.find(item => item.custom_id === customModel.custom_id)) {
+        message.error(t('components.modelProviders.modelIdExists'));
+        return;
+      }
+      custom_models.push(model_info);
+    } else {
+      // 如果 custom_id 相同，则更新
+      custom_models = custom_models.map(item => item.custom_id === customModel.custom_id ? model_info : item);
     }
-    custom_models.push(model_info);
-  } else {
-    // 如果 custom_id 相同，则更新
-    custom_models = custom_models.map(item => item.custom_id === customModel.custom_id ? model_info : item);
-  }
 
-  customModel.visible = false;
-  await configStore.setConfigValue('custom_models', custom_models);
-  message.success(customModel.edit_type === 'add' ? '模型添加成功' : '模型修改成功');
+    customModel.visible = false;
+    await configStore.setConfigValue('custom_models', custom_models);
+    message.success(customModel.edit_type === 'add' ? t('components.modelProviders.modelAddSuccess') : t('components.modelProviders.modelEditSuccess'));
+  } catch (error) {
+    console.error('保存自定义模型失败:', error);
+    message.error('保存模型失败');
+  }
 };
 
 // 切换展开状态
 const toggleExpand = (item) => {
-  expandedModels[item] = !expandedModels[item];
+  if (item && typeof item === 'string') {
+    expandedModels[item] = !expandedModels[item];
+  }
 };
 
 // 处理模型选择
 const handleModelSelect = (modelId, checked) => {
+  if (!modelId) return;
+  
   const selectedModels = providerConfig.selectedModels;
   const index = selectedModels.indexOf(modelId);
 
@@ -352,6 +388,11 @@ const handleModelSelect = (modelId, checked) => {
 
 // 打开提供商配置
 const openProviderConfig = (provider) => {
+  if (!provider || !modelNames.value[provider]) {
+    message.error('无效的模型提供商');
+    return;
+  }
+
   providerConfig.provider = provider;
   providerConfig.providerName = modelNames.value[provider].name;
   providerConfig.allModels = [];
@@ -368,54 +409,58 @@ const openProviderConfig = (provider) => {
 };
 
 // 获取模型提供商的模型列表
-const fetchProviderModels = (provider) => {
+const fetchProviderModels = async (provider) => {
+  if (!provider) return;
+  
   providerConfig.loading = true;
-  chatApi.getProviderModels(provider)
-    .then(data => {
-      console.log(`${provider} 模型列表:`, data);
+  
+  try {
+    const data = await chatApi.getProviderModels(provider);
+    console.log(`${provider} 模型列表:`, data);
 
-      // 处理各种可能的API返回格式
-      let modelsList = [];
+    // 处理各种可能的API返回格式
+    let modelsList = [];
 
-      // 情况1: { data: [...] }
-      if (data.data && Array.isArray(data.data)) {
-        modelsList = data.data;
-      }
-      // 情况2: { models: [...] } (字符串数组)
-      else if (data.models && Array.isArray(data.models)) {
-        modelsList = data.models.map(model => typeof model === 'string' ? { id: model } : model);
-      }
-      // 情况3: { models: { data: [...] } }
-      else if (data.models && data.models.data && Array.isArray(data.models.data)) {
-        modelsList = data.models.data;
-      }
+    // 情况1: { data: [...] }
+    if (data?.data && Array.isArray(data.data)) {
+      modelsList = data.data;
+    }
+    // 情况2: { models: [...] } (字符串数组)
+    else if (data?.models && Array.isArray(data.models)) {
+      modelsList = data.models.map(model => typeof model === 'string' ? { id: model } : model);
+    }
+    // 情况3: { models: { data: [...] } }
+    else if (data?.models?.data && Array.isArray(data.models.data)) {
+      modelsList = data.models.data;
+    }
 
-      console.log("处理后的模型列表:", modelsList);
-      providerConfig.allModels = modelsList;
-      providerConfig.loading = false;
-    })
-    .catch(error => {
-      console.error(`获取${provider}模型列表失败:`, error);
-      message.error({ content: `获取${modelNames.value[provider].name}模型列表失败`, duration: 2 });
-      providerConfig.loading = false;
-    });
+    console.log("处理后的模型列表:", modelsList);
+    providerConfig.allModels = modelsList;
+  } catch (error) {
+    console.error(`获取${provider}模型列表失败:`, error);
+    const providerName = modelNames.value[provider]?.name || provider;
+    message.error({ content: t('components.modelProviders.getModelListFailed', { provider: providerName }), duration: 2 });
+    providerConfig.allModels = [];
+  } finally {
+    providerConfig.loading = false;
+  }
 };
 
 // 保存提供商配置
 const saveProviderConfig = async () => {
   if (!modelStatus.value[providerConfig.provider]) {
-    message.error('请在 src/.env 中配置对应的 APIKEY，并重新启动服务');
+    message.error(t('components.modelProviders.configureApiKeyFirst'));
     return;
   }
 
-  message.loading({ content: '保存配置中...', key: 'save-config', duration: 0 });
+  message.loading({ content: t('components.modelProviders.savingConfig'), key: 'save-config', duration: 0 });
 
   try {
     // 发送选择的模型列表到后端
     const data = await chatApi.updateProviderModels(providerConfig.provider, providerConfig.selectedModels);
     console.log('更新后的模型列表:', data.models);
 
-    message.success({ content: '模型配置已保存!', key: 'save-config', duration: 2 });
+    message.success({ content: t('components.modelProviders.modelConfigSaved'), key: 'save-config', duration: 2 });
 
     // 关闭弹窗
     providerConfig.visible = false;
@@ -425,7 +470,7 @@ const saveProviderConfig = async () => {
 
   } catch (error) {
     console.error('保存配置失败:', error);
-    message.error({ content: '保存配置失败: ' + error.message, key: 'save-config', duration: 2 });
+    message.error({ content: t('components.modelProviders.saveConfigFailed') + ': ' + error.message, key: 'save-config', duration: 2 });
   }
 };
 
@@ -434,15 +479,39 @@ const cancelProviderConfig = () => {
   providerConfig.visible = false;
 };
 
-// 计算筛选后的模型列表
+// 计算筛选后的模型列表 - Add safety checks and optimize
 const filteredModels = computed(() => {
-  const allModels = providerConfig.allModels || [];
-  const searchQuery = providerConfig.searchQuery.toLowerCase();
-  return allModels.filter(model => model.id.toLowerCase().includes(searchQuery));
+  const allModels = providerConfig.allModels;
+  if (!Array.isArray(allModels) || allModels.length === 0) {
+    return [];
+  }
+  
+  const searchQuery = providerConfig.searchQuery?.toLowerCase() || '';
+  if (!searchQuery) {
+    return allModels;
+  }
+  
+  return allModels.filter(model => {
+    return model?.id?.toLowerCase().includes(searchQuery);
+  });
 });
 </script>
 
 <style lang="less" scoped>
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  
+  .loading-text {
+    margin-top: 16px;
+    color: var(--gray-600);
+    font-size: 14px;
+  }
+}
+
 .model-provider-card {
   border: 1px solid var(--gray-200);
   background-color: white;

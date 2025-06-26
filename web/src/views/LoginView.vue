@@ -18,13 +18,13 @@
     <div class="login-container">
       <div class="login-logo">
         <!-- <img src="@/assets/logo.svg" alt="Logo" v-if="false" /> -->
-        <h1>知识问答管理系统</h1>
+        <h1>{{ t('home.title') }}</h1>
       </div>
 
       <!-- 初始化管理员表单 -->
       <div v-if="isFirstRun" class="login-form">
-        <h2>系统初始化</h2>
-        <p class="init-desc">系统首次运行，请创建超级管理员账户：</p>
+        <h2>{{ t('auth.systemInit') }}</h2>
+        <p class="init-desc">{{ t('auth.initDescription') }}</p>
 
         <a-form
           :model="adminForm"
@@ -32,26 +32,26 @@
           layout="vertical"
         >
           <a-form-item
-            label="用户名"
+            :label="t('auth.username')"
             name="username"
-            :rules="[{ required: true, message: '请输入用户名' }]"
+            :rules="[{ required: true, message: t('auth.pleaseEnterUsername') }]"
           >
             <a-input v-model:value="adminForm.username" prefix-icon="user" />
           </a-form-item>
 
           <a-form-item
-            label="密码"
+            :label="t('auth.password')"
             name="password"
-            :rules="[{ required: true, message: '请输入密码' }]"
+            :rules="[{ required: true, message: t('auth.pleaseEnterPassword') }]"
           >
             <a-input-password v-model:value="adminForm.password" prefix-icon="lock" />
           </a-form-item>
 
           <a-form-item
-            label="确认密码"
+            :label="t('auth.confirmPassword')"
             name="confirmPassword"
             :rules="[
-              { required: true, message: '请确认密码' },
+              { required: true, message: t('auth.pleaseConfirmPassword') },
               { validator: validateConfirmPassword }
             ]"
           >
@@ -59,14 +59,14 @@
           </a-form-item>
 
           <a-form-item>
-            <a-button type="primary" html-type="submit" :loading="loading" block>创建管理员账户</a-button>
+            <a-button type="primary" html-type="submit" :loading="loading" block>{{ t('auth.createAdminAccount') }}</a-button>
           </a-form-item>
         </a-form>
       </div>
 
       <!-- 登录表单 -->
       <div v-else class="login-form">
-        <h2>用户登录</h2>
+        <h2>{{ t('auth.login') }}</h2>
 
         <a-form
           :model="loginForm"
@@ -74,57 +74,67 @@
           layout="vertical"
         >
           <a-form-item
-            label="用户名"
+            :label="t('auth.username')"
             name="username"
-            :rules="[{ required: true, message: '请输入用户名' }]"
+            :rules="[{ required: true, message: t('auth.pleaseEnterUsername') }]"
           >
-            <a-input v-model:value="loginForm.username">
+            <a-input 
+              v-model:value="loginForm.username" 
+              :placeholder="t('auth.username')"
+              size="large"
+            >
               <template #prefix>
-                <user-outlined />
+                <UserOutlined />
               </template>
             </a-input>
           </a-form-item>
 
           <a-form-item
-            label="密码"
+            :label="t('auth.password')"
             name="password"
-            :rules="[{ required: true, message: '请输入密码' }]"
+            :rules="[{ required: true, message: t('auth.pleaseEnterPassword') }]"
           >
-            <a-input-password v-model:value="loginForm.password">
+            <a-input-password 
+              v-model:value="loginForm.password" 
+              :placeholder="t('auth.password')"
+              size="large"
+            >
               <template #prefix>
-                <lock-outlined />
+                <LockOutlined />
               </template>
             </a-input-password>
           </a-form-item>
 
           <a-form-item>
             <div class="login-options">
-              <a-checkbox v-model:checked="rememberMe" @click="showDevMessage">记住我</a-checkbox>
-              <a class="forgot-password" @click="showDevMessage">忘记密码?</a>
+              <a-checkbox v-model:checked="rememberMe" @click="showDevMessage">{{ t('auth.rememberMe') }}</a-checkbox>
+              <a @click="showDevMessage">{{ t('auth.forgotPassword') }}</a>
             </div>
           </a-form-item>
 
           <a-form-item>
-            <a-button type="primary" html-type="submit" :loading="loading" block>登录</a-button>
+            <a-button type="primary" html-type="submit" :loading="loading" size="large" block>
+              {{ t('auth.login') }}
+            </a-button>
           </a-form-item>
 
           <!-- 第三方登录选项 -->
           <div class="third-party-login">
             <div class="divider">
-              <span>其他登录方式</span>
+              <span>{{ t('auth.otherLoginMethods') }}</span>
             </div>
             <div class="login-icons">
-              <a-tooltip title="微信登录">
+              <a-tooltip :title="t('auth.wechatLogin')">
                 <a-button shape="circle" class="login-icon" @click="showDevMessage">
                   <template #icon><wechat-outlined /></template>
                 </a-button>
               </a-tooltip>
-              <a-tooltip title="企业微信登录">
+              <a-tooltip :title="t('auth.enterpriseWechatLogin')">
                 <a-button shape="circle" class="login-icon" @click="showDevMessage">
                   <template #icon><qrcode-outlined /></template>
                 </a-button>
               </a-tooltip>
-              <a-tooltip title="飞书登录">
+              <a-tooltip :title="t('auth.feishuLogin')">
                 <a-button shape="circle" class="login-icon" @click="showDevMessage">
                   <template #icon><thunderbolt-outlined /></template>
                 </a-button>
@@ -141,9 +151,9 @@
 
       <!-- 页脚 -->
       <div class="login-footer">
-        <a @click="showDevMessage">联系我们</a>
-        <a @click="showDevMessage">使用帮助</a>
-        <a @click="showDevMessage">隐私政策</a>
+        <a @click="showDevMessage">{{ t('auth.contactUs') }}</a>
+        <a @click="showDevMessage">{{ t('auth.help') }}</a>
+        <a @click="showDevMessage">{{ t('auth.privacyPolicy') }}</a>
       </div>
     </div>
   </div>
@@ -152,6 +162,7 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
 import { message } from 'ant-design-vue';
 import { chatApi } from '@/apis/auth_api';
@@ -161,6 +172,7 @@ import loginBg from '@/assets/pics/login_bg.jpg';
 
 const router = useRouter();
 const userStore = useUserStore();
+const { t } = useI18n();
 
 // 状态
 const isFirstRun = ref(false);
@@ -186,16 +198,16 @@ const adminForm = reactive({
 
 // 开发中功能提示
 const showDevMessage = () => {
-  message.info('该功能正在开发中，敬请期待！');
+  message.info(t('auth.developmentFeature'));
 };
 
 // 密码确认验证
 const validateConfirmPassword = (rule, value) => {
   if (value === '') {
-    return Promise.reject('请确认密码');
+    return Promise.reject(t('auth.pleaseConfirmPassword'));
   }
   if (value !== adminForm.password) {
-    return Promise.reject('两次输入的密码不一致');
+    return Promise.reject(t('auth.passwordMismatch'));
   }
   return Promise.resolve();
 };
@@ -211,7 +223,7 @@ const handleLogin = async () => {
       password: loginForm.password
     });
 
-    message.success('登录成功');
+    message.success(t('messages.loginSuccess'));
 
     // 获取重定向路径
     const redirectPath = sessionStorage.getItem('redirect') || '/';
@@ -254,7 +266,7 @@ const handleLogin = async () => {
     }
   } catch (error) {
     console.error('登录失败:', error);
-    errorMessage.value = error.message || '登录失败，请检查用户名和密码';
+    errorMessage.value = error.message || t('auth.loginFailed');
   } finally {
     loading.value = false;
   }
@@ -267,7 +279,7 @@ const handleInitialize = async () => {
     errorMessage.value = '';
 
     if (adminForm.password !== adminForm.confirmPassword) {
-      errorMessage.value = '两次输入的密码不一致';
+      errorMessage.value = t('messages.passwordMismatch');
       return;
     }
 
@@ -276,11 +288,11 @@ const handleInitialize = async () => {
       password: adminForm.password
     });
 
-    message.success('管理员账户创建成功');
+    message.success(t('messages.adminAccountCreated'));
     router.push('/');
   } catch (error) {
     console.error('初始化失败:', error);
-    errorMessage.value = error.message || '初始化失败，请重试';
+    errorMessage.value = error.message || t('messages.initializationFailed');
   } finally {
     loading.value = false;
   }
@@ -294,7 +306,7 @@ const checkFirstRunStatus = async () => {
     isFirstRun.value = isFirst;
   } catch (error) {
     console.error('检查首次运行状态失败:', error);
-    errorMessage.value = '系统出错，请稍后重试';
+    errorMessage.value = t('messages.systemError');
   } finally {
     loading.value = false;
   }
@@ -309,12 +321,12 @@ const checkServerHealth = async () => {
       serverStatus.value = 'ok';
     } else {
       serverStatus.value = 'error';
-      serverError.value = response.message || '服务端状态异常';
+      serverError.value = response.message || t('messages.serverError');
     }
   } catch (error) {
     console.error('检查服务器健康状态失败:', error);
     serverStatus.value = 'error';
-    serverError.value = error.message || '无法连接到服务端，请检查网络连接';
+    serverError.value = error.message || t('messages.connectionError');
   } finally {
     healthChecking.value = false;
   }

@@ -10,7 +10,7 @@
           <a-col :span="8">
             <a-input
               v-model:value="item.key"
-              placeholder="模型名称"
+              :placeholder="t('components.tableConfig.modelNamePlaceholder')"
               readonly
               class="key-input"
             />
@@ -19,7 +19,7 @@
             <a-input
               v-model:value="item.value"
               @change="updateValue(index)"
-              placeholder="模型本地路径"
+              :placeholder="t('components.tableConfig.modelPathPlaceholder')"
               class="value-input"
             />
           </a-col>
@@ -37,28 +37,28 @@
       </div>
 
       <a-button block @click="addConfig" class="add-btn" :disabled="isAdding">
-        <PlusOutlined /> 添加路径映射
+        <PlusOutlined /> {{ t('components.tableConfig.addPathMapping') }}
       </a-button>
     </a-form>
 
     <a-modal
-      title="添加路径映射"
+      :title="t('components.tableConfig.addPathMapping')"
       v-model:open="addConfigModalVisible"
       @ok="confirmAddConfig"
       class="config-modal"
     >
       <a-form layout="vertical">
-        <a-form-item label="模型名称（与Huggingface名称一致，比如 BAAI/bge-large-zh-v1.5" required>
+        <a-form-item :label="t('components.tableConfig.modelNameRequired')" name="key" required>
           <a-input
             v-model:value="newConfig.key"
-            placeholder="请输入模型名称"
+            :placeholder="t('components.tableConfig.enterModelName')"
             class="modal-input"
           />
         </a-form-item>
-        <a-form-item label="模型本地路径（绝对路径，比如 /hdd/models/BAAI/bge-large-zh-v1.5）" required>
+        <a-form-item :label="t('components.tableConfig.modelPathRequired')" name="value" required>
           <a-input
             v-model:value="newConfig.value"
-            placeholder="请输入模型本地路径"
+            :placeholder="t('components.tableConfig.enterModelPath')"
             class="modal-input"
           />
         </a-form-item>
@@ -71,6 +71,7 @@
 import { ref, reactive, computed, watch } from 'vue';
 import { message } from 'ant-design-vue';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   config: {
@@ -80,6 +81,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:config']);
+
+const t = useI18n().t;
 
 // 配置列表
 const configList = reactive([]);
@@ -105,11 +108,11 @@ const addConfig = () => {
 // 确认添加配置
 const confirmAddConfig = () => {
   if (newConfig.value.key === '' || newConfig.value.value === '') {
-    message.warning('键或值不能为空');
+    message.warning(t('components.tableConfig.keyValueRequired'));
     return;
   }
   if (configList.some(item => item.key === newConfig.value.key)) {
-    message.warning('键已存在');
+    message.warning(t('components.tableConfig.keyExists'));
     return;
   }
   configList.push({ key: newConfig.value.key, value: newConfig.value.value });

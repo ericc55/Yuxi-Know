@@ -7,13 +7,13 @@
           class="close nav-btn nav-btn-icon-only"
           @click="state.isSidebarOpen = true"
         >
-          <a-tooltip title="展开侧边栏" placement="right">
+          <a-tooltip :title="t('chat.expandSidebar')" placement="right">
             <PanelLeftOpen size="20" color="var(--gray-800)"/>
           </a-tooltip>
         </div>
 
         <div class="newchat nav-btn nav-btn-icon-only" @click="$emit('newconv')">
-          <a-tooltip title="新建对话" placement="right">
+          <a-tooltip :title="t('chat.newConversation')" placement="right">
             <MessageSquarePlus size="20" color="var(--gray-800)"/>
           </a-tooltip>
         </div>
@@ -31,27 +31,27 @@
         </div>
         <div v-if="opts.showPanel" class="my-panal r0 top100 swing-in-top-fwd" ref="panel">
           <div class="flex-center" @click="meta.summary_title = !meta.summary_title">
-            总结对话标题 <div @click.stop><a-switch v-model:checked="meta.summary_title" /></div>
+            {{ t('chat.summarizeTitle') }} <div @click.stop><a-switch v-model:checked="meta.summary_title" /></div>
           </div>
           <div class="flex-center">
-            最大历史轮数 <a-input-number id="inputNumber" v-model:value="meta.history_round" :min="1" :max="50" />
+            {{ t('chat.maxHistoryRounds') }} <a-input-number id="inputNumber" v-model:value="meta.history_round" :min="1" :max="50" />
           </div>
           <div class="flex-center">
-            字体大小
-            <a-select v-model:value="meta.fontSize" style="width: 100px" placeholder="选择字体大小">
-              <a-select-option value="smaller">更小</a-select-option>
-              <a-select-option value="default">默认</a-select-option>
-              <a-select-option value="larger">更大</a-select-option>
+            {{ t('chat.fontSize') }}
+            <a-select v-model:value="meta.fontSize" style="width: 100px" :placeholder="t('chat.selectFontSize')">
+              <a-select-option value="smaller">{{ t('chat.fontSizes.smaller') }}</a-select-option>
+              <a-select-option value="default">{{ t('chat.fontSizes.default') }}</a-select-option>
+              <a-select-option value="larger">{{ t('chat.fontSizes.larger') }}</a-select-option>
             </a-select>
           </div>
           <div class="flex-center" @click="meta.wideScreen = !meta.wideScreen">
-            宽屏模式 <div @click.stop><a-switch v-model:checked="meta.wideScreen" /></div>
+            {{ t('chat.wideScreen') }} <div @click.stop><a-switch v-model:checked="meta.wideScreen" /></div>
           </div>
         </div>
       </div>
     </div>
     <div v-if="conv.messages.length == 0" class="chat-examples">
-      <h1>你好，我是语析，一个基于知识图谱的智能助手</h1>
+      <h1>{{ t('chat.welcome') }}</h1>
       <div class="opts">
         <div
           class="opt__button"
@@ -94,7 +94,7 @@
               @click="meta.use_web=!meta.use_web"
             >
               <Compass style="margin-right: 3px;" size="14"/>
-              联网搜索
+              {{ t('chat.webSearch') }}
             </div>
             <div
               :class="{'switch': true, 'opt-item': true, 'active': meta.use_graph}"
@@ -102,7 +102,7 @@
               @click="meta.use_graph=!meta.use_graph"
             >
               <Waypoints style="margin-right: 3px;" size="14"/>
-              知识图谱
+              {{ t('chat.knowledgeGraph') }}
             </div>
             <a-dropdown
               v-if="configStore.config.enable_knowledge_base && opts.databases.length > 0"
@@ -110,7 +110,7 @@
             >
               <a class="ant-dropdown-link" @click.prevent>
                 <BookCheck style="margin-right: 3px;" size="14"/>
-                <span class="text">{{ meta.selectedKB === null ? '不使用知识库' : opts.databases[meta.selectedKB]?.name }}</span>
+                <span class="text">{{ meta.selectedKB === null ? t('chat.notUseKB') : opts.databases[meta.selectedKB]?.name }}</span>
               </a>
               <template #overlay>
                 <a-menu>
@@ -118,14 +118,14 @@
                     <a href="javascript:;">{{ db.name }}</a>
                   </a-menu-item>
                   <a-menu-item @click="useDatabase(null)">
-                    <a href="javascript:;">不使用</a>
+                    <a href="javascript:;">{{ t('chat.notUse') }}</a>
                   </a-menu-item>
                 </a-menu>
               </template>
             </a-dropdown>
           </template>
         </MessageInputComponent>
-        <p class="note">请注意辨别内容的可靠性 By {{ configStore.config?.model_provider }}: {{ configStore.config?.model_name }}</p>
+        <p class="note">{{ t('chat.reliabilityNote') }} {{ configStore.config?.model_provider }}: {{ configStore.config?.model_name }}</p>
       </div>
     </div>
     <!-- 添加全局Refs侧边栏 -->
@@ -141,6 +141,7 @@
 
 <script setup>
 import { reactive, ref, onMounted, toRefs, nextTick, onUnmounted, watch, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   BookOutlined,
   CompassOutlined,
@@ -159,6 +160,7 @@ import ModelSelectorComponent from '@/components/ModelSelectorComponent.vue'
 import { chatApi } from '@/apis/auth_api'
 import { knowledgeBaseApi } from '@/apis/admin_api'
 
+const { t } = useI18n()
 const props = defineProps({
   conv: Object,
   state: Object
@@ -177,11 +179,11 @@ const shouldAutoScroll = ref(true);
 
 const panel = ref(null)
 const modelCard = ref(null)
-const examples = ref([
-  '写一个简单的冒泡排序',
-  '今天无锡天气怎么样？',
-  '介绍一下红楼梦',
-  '今天星期几？'
+const examples = computed(() => [
+  t('chat.examples.example1'),
+  t('chat.examples.example2'),
+  t('chat.examples.example3'),
+  t('chat.examples.example4')
 ])
 
 const opts = reactive({
@@ -274,7 +276,10 @@ const useDatabase = (index) => {
   console.log(selected)
   if (index != null && configStore.config.embed_model != selected.embed_model) {
     console.log(selected.embed_model, configStore.config.embed_model)
-    message.error(`所选知识库的向量模型（${selected.embed_model}）与当前向量模型（${configStore.config.embed_model}) 不匹配，请重新选择`)
+    message.error(t('chat.vectorModelMismatch', { 
+      selected: selected.embed_model, 
+      current: configStore.config.embed_model 
+    }))
   } else {
     meta.selectedKB = index
   }
@@ -301,10 +306,10 @@ const handleKeyDown = (e) => {
 
 const renameTitle = () => {
   if (meta.summary_title) {
-    const prompt = '请用一个很短的句子关于下面的对话内容的主题起一个名字，不要带标点符号：'
+    const prompt = t('chat.summarizeTitlePrompt')
     const firstUserMessage = conv.value.messages[0].content
     const firstAiMessage = conv.value.messages[1].content
-    const context = `${prompt}\n\n问题: ${firstUserMessage}\n\n回复: ${firstAiMessage}，主题是（一句话）：`
+    const context = `${prompt}\n\n${t('chat.question')}: ${firstUserMessage}\n\n${t('chat.reply')}: ${firstAiMessage}，${t('chat.topic')}：`
     simpleCall(context).then((data) => {
       const response = data.response.split("：")[0].replace(/^["'"']/g, '').replace(/["'"']$/g, '')
       emit('rename-title', response)
@@ -429,7 +434,7 @@ const updateMessage = (info) => {
     } catch (error) {
       console.error('Error updating message:', error);
       msg.status = 'error';
-      msg.content = '消息更新失败';
+      msg.content = t('messages.messageUpdateFailed');
     }
   } else {
     console.error('Message not found:', info.id);
@@ -457,7 +462,7 @@ const groupRefs = (id) => {
 const loadDatabases = () => {
   // 由于这是管理功能，需要检查用户是否有管理权限
   if (!userStore.isAdmin) {
-    console.log('非管理员用户，跳过加载数据库列表');
+    console.log('Non-admin user, skipping database list loading');
     return;
   }
 
@@ -468,10 +473,10 @@ const loadDatabases = () => {
         opts.databases = data.databases
       })
       .catch(error => {
-        console.error('加载数据库列表失败:', error)
+        console.error('Failed to load database list:', error)
       })
   } catch (error) {
-    console.error('获取数据库列表失败:', error);
+    console.error('Failed to get database list:', error);
   }
 }
 
@@ -504,7 +509,7 @@ const fetchChatResponse = (user_input, cur_res_id) => {
       if (response.status === 401) {
         const userStore = useUserStore();
         if (userStore.isLoggedIn) {
-          message.error('登录已过期，请重新登录');
+          message.error(t('chat.loginExpired'));
           userStore.logout();
 
           // 使用setTimeout确保消息显示后再跳转
@@ -512,9 +517,9 @@ const fetchChatResponse = (user_input, cur_res_id) => {
             window.location.href = '/login';
           }, 1500);
         }
-        throw new Error('未授权，请先登录');
+        throw new Error(t('messages.unauthorized'));
       }
-      throw new Error(`请求失败: ${response.status} ${response.statusText}`);
+      throw new Error(t('messages.requestFailed') + `: ${response.status} ${response.statusText}`);
     }
 
     if (!response.body) throw new Error("ReadableStream not supported.");
@@ -588,7 +593,7 @@ const fetchChatResponse = (user_input, cur_res_id) => {
         updateMessage({
           id: cur_res_id,
           status: "error",
-          message: error.message || '请求失败',
+          message: error.message || t('messages.requestFailed'),
         });
       }
     }
@@ -609,7 +614,7 @@ const sendMessage = () => {
   const user_input = conv.value.inputText.trim();
   const dbID = opts.databases.length > 0 ? opts.databases[meta.selectedKB]?.db_id : null;
   if (isStreaming.value) {
-    message.error('请等待上一条消息处理完成');
+    message.error(t('chat.pleaseWaitForPreviousMessage'));
     return
   }
   if (user_input) {
@@ -623,7 +628,7 @@ const sendMessage = () => {
     meta.db_id = dbID;
     fetchChatResponse(user_input, cur_res_id)
   } else {
-    console.log('请输入消息');
+    console.log(t('chat.pleaseEnterMessage'));
   }
 }
 
@@ -652,7 +657,7 @@ onMounted(() => {
     conv.value.messages.forEach(msg => {
       if (msg.role === 'received' && (!msg.content || msg.content.trim() === '')) {
         msg.status = 'error';
-        msg.message = '内容加载失败';
+        msg.message = t('messages.contentLoadFailed');
       }
     });
   }

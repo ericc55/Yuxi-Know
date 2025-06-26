@@ -29,14 +29,17 @@
 
 <script setup>
 import { reactive, ref, watch, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { DeleteOutlined } from '@ant-design/icons-vue'
 import ChatComponent from '@/components/ChatComponent.vue'
 import { MessageSquareMore, PanelLeftClose } from 'lucide-vue-next'
 
+const { t } = useI18n()
+
 const convs = reactive(JSON.parse(localStorage.getItem('chat-convs')) || [
   {
     id: 0,
-    title: '新对话',
+    title: t('chat.newConversation'),
     history: [],
     messages: [],
     inputText: ''
@@ -81,7 +84,7 @@ const addNewConv = () => {
   }
   convs.unshift({
     id: generateRandomHash(8),
-    title: `新对话`,
+    title: t('chat.newConversation'),
     history: [],
     messages: [],
     inputText: ''

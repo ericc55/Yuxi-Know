@@ -1,29 +1,29 @@
 <template>
   <div class="database-container layout-container" v-if="configStore.config.enable_knowledge_base">
-    <HeaderComponent title="文档知识库" :loading="state.loading">
+    <HeaderComponent :title="t('database.title')" :loading="state.loading">
       <template #actions>
         <a-button type="primary" @click="newDatabase.open=true">
-          新建知识库
+          {{ t('database.createDatabase') }}
         </a-button>
       </template>
     </HeaderComponent>
 
-    <a-modal :open="newDatabase.open" title="新建知识库" @ok="createDatabase" @cancel="newDatabase.open=false">
-      <h3>知识库名称<span style="color: var(--error-color)">*</span></h3>
-      <a-input v-model:value="newDatabase.name" placeholder="新建知识库名称" />
-      <h3 style="margin-top: 20px;">知识库描述</h3>
-      <p style="color: var(--gray-700); font-size: 14px;">在智能体流程中，这里的描述会作为工具的描述。智能体会根据知识库的标题和描述来选择合适的工具。所以这里描述的越详细，智能体越容易选择到合适的工具。</p>
+    <a-modal :open="newDatabase.open" :title="t('database.createDatabase')" @ok="createDatabase" @cancel="newDatabase.open=false">
+      <h3>{{ t('database.databaseName') }}<span style="color: var(--error-color)">*</span></h3>
+      <a-input v-model:value="newDatabase.name" :placeholder="t('database.databaseNamePlaceholder')" />
+      <h3 style="margin-top: 20px;">{{ t('database.databaseDescription') }}</h3>
+      <p style="color: var(--gray-700); font-size: 14px;">{{ t('database.descriptionHint') }}</p>
       <a-textarea
         v-model:value="newDatabase.description"
-        placeholder="新建知识库描述"
+        :placeholder="t('database.databaseDescriptionPlaceholder')"
         :auto-size="{ minRows: 5, maxRows: 10 }"
       />
       <!-- <h3 style="margin-top: 20px;">向量维度</h3>
       <p>必须与向量模型 {{ configStore.config.embed_model }} 一致</p>
       <a-input v-model:value="newDatabase.dimension" placeholder="向量维度 (e.g. 768, 1024)" /> -->
       <template #footer>
-        <a-button key="back" @click="newDatabase.open=false">取消</a-button>
-        <a-button key="submit" type="primary" :loading="newDatabase.loading" @click="createDatabase">创建</a-button>
+        <a-button key="back" @click="newDatabase.open=false">{{ t('common.cancel') }}</a-button>
+        <a-button key="submit" type="primary" :loading="newDatabase.loading" @click="createDatabase">{{ t('common.create') }}</a-button>
       </template>
     </a-modal>
     <div class="databases">
@@ -31,10 +31,10 @@
         <div class="top">
           <div class="icon"><BookPlus /></div>
           <div class="info">
-            <h3>新建知识库</h3>
+            <h3>{{ t('database.createDatabase') }}</h3>
           </div>
         </div>
-        <p>导入您自己的文本数据或通过Webhook实时写入数据以增强 LLM 的上下文。</p>
+        <p>{{ t('database.createDatabaseDescription') }}</p>
       </div>
       <div
         v-for="database in databases"
@@ -45,11 +45,11 @@
           <div class="icon"><ReadFilled /></div>
           <div class="info">
             <h3>{{ database.name }}</h3>
-            <p><span>{{ database.files ? Object.keys(database.files).length : 0 }} 文件</span></p>
+            <p><span>{{ database.files ? Object.keys(database.files).length : 0 }} {{ t('database.files') }}</span></p>
           </div>
         </div>
-        <a-tooltip :title="database.description || '暂无描述'">
-          <p class="description">{{ database.description || '暂无描述' }}</p>
+        <a-tooltip :title="database.description || t('database.noDescription')">
+          <p class="description">{{ database.description || t('database.noDescription') }}</p>
         </a-tooltip>
         <div class="tags">
           <a-tag color="blue" v-if="database.embed_model">{{ database.embed_model }}</a-tag>
@@ -63,7 +63,7 @@
     <a-empty>
       <template #description>
         <span>
-          前往 <router-link to="/setting" style="color: var(--main-color); font-weight: bold;">设置</router-link> 页面配置知识库。
+          {{ t('database.configureKnowledgeBase') }} <router-link to="/setting" style="color: var(--main-color); font-weight: bold;">{{ t('navbar.settings') }}</router-link> {{ t('database.page') }}
         </span>
       </template>
     </a-empty>
@@ -73,6 +73,7 @@
 <script setup>
 import { ref, onMounted, reactive, watch, h } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n'
 import { message, Button } from 'ant-design-vue'
 import { ReadFilled, PlusOutlined, AppstoreFilled, LoadingOutlined } from '@ant-design/icons-vue'
 import { BookPlus } from 'lucide-vue-next';
@@ -81,6 +82,7 @@ import { useUserStore } from '@/stores/user';
 import HeaderComponent from '@/components/HeaderComponent.vue';
 import { knowledgeBaseApi } from '@/apis/admin_api';
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const databases = ref([])
@@ -114,7 +116,9 @@ const loadDatabases = () => {
     .catch(error => {
       console.error('加载数据库列表失败:', error);
       if (error.message.includes('权限')) {
-        message.error('需要管理员权限访问知识库')
+        message.error(t('database.adminPermissionRequired'))
+      } else {
+        message.error(t('database.loadFailed'))
       }
       state.loading = false
     })
@@ -124,7 +128,7 @@ const createDatabase = () => {
   newDatabase.loading = true
   console.log(newDatabase)
   if (!newDatabase.name) {
-    message.error('数据库名称不能为空')
+    message.error(t('database.databaseNameRequired'))
     newDatabase.loading = false
     return
   }
@@ -141,11 +145,11 @@ const createDatabase = () => {
     newDatabase.name = ''
     newDatabase.description = '',
     newDatabase.dimension = ''
-    message.success('创建成功')
+    message.success(t('database.createSuccess'))
   })
   .catch(error => {
     console.error('创建数据库失败:', error)
-    message.error(error.message || '创建失败')
+    message.error(error.message || t('database.createFailed'))
   })
   .finally(() => {
     newDatabase.loading = false

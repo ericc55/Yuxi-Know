@@ -18,7 +18,7 @@
           </a-menu-item>
           <a-menu-divider />
           <a-menu-item key="logout" @click="logout">
-            <LogoutOutlined /> &nbsp;退出登录
+            <LogoutOutlined /> &nbsp;{{ t('common.logout') }}
           </a-menu-item>
         </a-menu>
       </template>
@@ -32,11 +32,13 @@
 <script setup>
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/user';
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import { CircleUser, UserRoundCheck } from 'lucide-vue-next';
 
+const { t } = useI18n()
 const router = useRouter();
 const userStore = useUserStore();
 
@@ -57,13 +59,13 @@ const userInitial = computed(() => {
 const userRoleText = computed(() => {
   switch (userStore.userRole) {
     case 'superadmin':
-      return '超级管理员';
+      return t('components.userInfo.superAdmin');
     case 'admin':
-      return '管理员';
+      return t('components.userInfo.admin');
     case 'user':
-      return '普通用户';
+      return t('components.userInfo.user');
     default:
-      return '未知角色';
+      return t('components.userInfo.unknownRole');
   }
 });
 
@@ -77,11 +79,14 @@ const userRoleClass = computed(() => {
 });
 
 // 退出登录
-const logout = () => {
-  userStore.logout();
-  message.success('已退出登录');
-  // 跳转到首页
-  router.push('/login');
+const logout = async () => {
+  try {
+    await userStore.logout();
+    message.success(t('auth.logoutSuccess'));
+    router.push('/login');
+  } catch (error) {
+    console.error('Logout error:', error);
+  }
 };
 
 // 前往登录页
