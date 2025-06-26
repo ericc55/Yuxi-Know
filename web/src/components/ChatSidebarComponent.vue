@@ -10,7 +10,7 @@
     </div>
     <div class="conversation-list-top">
       <button type="text" @click="createNewChat" class="new-chat-btn">
-        新对话
+        {{ t('agents.newConversation') }}
       </button>
     </div>
     <div class="conversation-list">
@@ -24,17 +24,17 @@
           @click="selectChat(chat.id)"
         >
           <div class="conversation-info">
-            <div class="conversation-title">{{ chat.title || '新对话' }}</div>
+            <div class="conversation-title">{{ chat.title || t('agents.newConversation') }}</div>
           </div>
           <div class="conversation-actions">
             <a-dropdown :trigger="['click']" @click.stop>
               <template #overlay>
                 <a-menu>
                   <a-menu-item key="rename" @click.stop="renameChat(chat.id)">
-                    <EditOutlined /> 重命名
+                    <EditOutlined /> {{ t('agents.rename') }}
                   </a-menu-item>
                   <a-menu-item key="delete" @click.stop="deleteChat(chat.id)" v-if="chat.id !== currentChatId">
-                    <DeleteOutlined /> 删除
+                    <DeleteOutlined /> {{ t('agents.delete') }}
                   </a-menu-item>
                 </a-menu>
               </template>
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div v-if="chatsList.length === 0" class="empty-list">
-          暂无对话历史
+          {{ t('agents.noConversationHistory') }}
         </div>
       </template>
     </div>
@@ -61,6 +61,9 @@ import {
 } from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
 import { PanelLeftClose, MessageSquarePlus } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps({
   currentAgentId: {
@@ -118,7 +121,7 @@ const renameChat = async (chatId) => {
 
     await new Promise((resolve, reject) => {
       modalInstance = Modal.confirm({
-        title: '重命名对话',
+        title: t('agents.renameConversation'),
         content: h('div', {}, [
           h('input', {
             value: chat.title,
@@ -126,8 +129,8 @@ const renameChat = async (chatId) => {
             onInput: (e) => { newTitle = e.target.value; }
           })
         ]),
-        okText: '确认',
-        cancelText: '取消',
+        okText: t('agents.confirm'),
+        cancelText: t('agents.cancel'),
         onOk: () => {
           resolve();
         },
@@ -139,7 +142,7 @@ const renameChat = async (chatId) => {
 
     // 确保有标题
     if (!newTitle.trim()) {
-      message.warning('标题不能为空');
+      message.warning(t('agents.titleCannotBeEmpty'));
       return;
     }
 

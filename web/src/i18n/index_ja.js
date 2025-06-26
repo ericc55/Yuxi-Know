@@ -79,15 +79,15 @@ export default {
   home: {
     title: 'Yuxi-Know',
     subtitle: 'AI駆動のナレッジ管理ツール',
-    description: 'ナレッジベースとナレッジグラフを組み合わせ、より正確で包括的な回答を提供',
+    description: '次世代AIナレッジQ&Aシステムを体験し、インテリジェントな会話、高速ナレッジ検索、パーソナライズされたQ&A体験をお楽しみください。',
     powerfulQA: '強力なQ&A機能',
+    systemPreview: 'システムプレビュー',
     features: {
       flexibleKB: '📚 柔軟なナレッジベース',
       knowledgeGraph: '🕸️ ナレッジグラフ統合',
       multiModel: '🤖 マルチモデルサポート'
     },
-    startChat: '会話を開始',
-    githubStars: 'GitHub スター'
+    startChat: 'チャット開始'
   },
   chat: {
     welcome: 'こんにちは、私はYuxiです。ナレッジグラフベースのインテリジェントアシスタントです',
@@ -129,7 +129,14 @@ export default {
     generating: '生成中...',
     generatingReply: '返信生成中...',
     stoppedByUser: '応答の生成を停止しました',
-    retryStoppedMessage: '質問を再編集'
+    retryStoppedMessage: '質問を再編集',
+    rename: '名前変更',
+    delete: '削除',
+    noConversationHistory: '会話履歴がありません',
+    renameConversation: '会話の名前を変更',
+    confirm: '確認',
+    cancel: 'キャンセル',
+    titleCannotBeEmpty: 'タイトルは空にできません'
   },
   agents: {
     title: 'AIエージェント',
@@ -165,7 +172,28 @@ export default {
     noCheckpointer: 'このエージェントにはCheckpointerが設定されていません。機能が正常に動作しない可能性があります。https://langchain-ai.github.io/langgraph/concepts/persistence/を参照してください',
     selectedCount: '選択された項目数：{count}項',
     clearAll: 'すべてクリア',
-    defaultValue: 'デフォルト：{value}'
+    defaultValue: 'デフォルト：{value}',
+    newConversation: '新しい会話',
+    loadingHistory: '履歴を読み込み中...',
+    selectAgentToStart: 'エージェントを選択して会話を開始してください',
+    differentAgentCapabilities: 'エージェントごとに異なる専門性と能力があります',
+    enterQuestion: '質問を入力...',
+    verifyReliability: 'コンテンツの信頼性を確認してください',
+    createConversationFailed: '会話の作成に失敗しました',
+    deleteConversationFailed: '会話の削除に失敗しました',
+    renameConversationFailed: '会話の名前変更に失敗しました',
+    retryInDevelopment: 'リトライ機能は開発中です',
+    rename: '名前変更',
+    delete: '削除',
+    noConversationHistory: '会話履歴がありません',
+    renameConversation: '会話の名前を変更',
+    confirm: '確認',
+    cancel: 'キャンセル',
+    titleCannotBeEmpty: 'タイトルは空にできません',
+    // Agent descriptions override for backend hardcoded text
+    descriptions: {
+      chatbot: 'ベーシックな対話ロボット。質問に答えることができます。デフォルトではツールを使用しませんが、設定で必要なツールを有効にできます。'
+    }
   },
   knowledgeBase: {
     title: 'ナレッジベース',
@@ -346,7 +374,7 @@ export default {
     invalidFileId: '無効なファイルID',
     fileIndexStarted: 'ファイル{fileId}のインデックスが開始されました。',
     fileIndexFailed: 'ファイル{fileId}のインデックス開始に失敗しました。',
-    fileIndexError: 'ファイル{fileId}のインデックス中にエラーが発生しました。',
+    fileIndexError: 'ファイル{fileIndex}のインデックス中にエラーが発生しました。',
     noFilesToIndex: 'インデックスするファイルがありません',
     queryExamples: {
       example1: '賈宝玉の侍女は誰ですか？',
@@ -436,6 +464,23 @@ export default {
     reasoning: '推理過程',
     thinking: '思考中...',
     reasoningProcess: '推理過程',
+    callingTool: 'ツール呼び出し中: ',
+    tool: 'ツール',
+    executionCompleted: '実行完了',
+    parameters: 'パラメータ:',
+    exampleQueries: 'クエリの例：',
+    knowledgeBaseSearchResults: 'ナレッジベース検索結果',
+    similarity: '類似度',
+    rerank: 'リランク',
+    noRelevantContent: '関連するナレッジベースコンテンツが見つかりません',
+    documentSegment: 'ドキュメントセグメント',
+    filename: 'ファイル名',
+    similarityScore: '類似度スコア',
+    rerankScore: 'リランクスコア',
+    documentContent: 'ドキュメント内容',
+    customModels: 'カスタムモデル',
+    addModel: 'モデル追加',
+    addOpenAICompatibleModel: 'OpenAI互換モデルを追加',
     statusLabels: {
       init: '初期化中',
       loading: '読み込み中',
@@ -473,6 +518,7 @@ export default {
       enterModelName: 'モデル名を入力してください',
       apiBase: 'API Base',
       enterApiBase: 'API Baseを入力してください',
+      apiKey: 'API Key',
       configureModel: '{providerName}モデル設定',
       saveConfig: '設定保存',
       searchModels: 'モデル検索...',
@@ -488,7 +534,16 @@ export default {
       configureApiKeyFirst: 'src/.envで対応するAPIKEYを設定し、サービスを再起動してください',
       savingConfig: '設定保存中...',
       modelConfigSaved: 'モデル設定が保存されました！',
-      saveConfigFailed: '設定の保存に失敗しました'
+      saveConfigFailed: '設定の保存に失敗しました',
+      loadingModels: 'モデルリストを取得中...',
+      selectModels: '{providerName}のモデルを選択',
+      modelSelectionDescription: 'システムで有効にしたいモデルにチェックを入れてください。リストには会話以外のモデルも含まれている可能性がありますので、注意深く確認してください。',
+      selectedModelsCount: '{count}個のモデルを選択済み',
+      filteredModelsCount: '（現在{count}個をフィルタ表示）',
+      openAICompatibleDescription: '追加するモデルは、vllm、OllamaなどのOpenAI互換モデルです。',
+      modelNameDescription: '呼び出すモデルの名前',
+      apiBaseDescription: '例：http://localhost:11434/v1',
+      requiresConfiguration: '設定が必要'
     }
   }
 }; 

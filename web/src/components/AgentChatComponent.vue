@@ -27,7 +27,7 @@
             <PanelLeftOpen size="20" color="var(--gray-800)"/>
           </div>
           <div class="newchat nav-btn" @click="createNewChat" :disabled="state.isProcessingRequest || state.creatingNewChat">
-            <MessageSquarePlus size="20" color="var(--gray-800)"/> <span class="text" :class="{'hide-text': isMediumContainer}">新对话</span>
+            <MessageSquarePlus size="20" color="var(--gray-800)"/> <span class="text" :class="{'hide-text': isMediumContainer}">{{ t('agents.newConversation') }}</span>
           </div>
         </div>
         <div class="header__center">
@@ -46,12 +46,12 @@
 
       <div v-if="isLoading" class="chat-loading">
         <LoadingOutlined />
-        <span>正在加载历史记录...</span>
+        <span>{{ t('agents.loadingHistory') }}</span>
       </div>
 
       <div v-else-if="convs.length === 0 && !onGoingConv.messages.length" class="chat-examples">
-        <h1>{{ currentAgent ? currentAgent.name : '请选择一个智能体开始对话' }}</h1>
-        <p>{{ currentAgent ? currentAgent.description : '不同的智能体有不同的专长和能力' }}</p>
+        <h1>{{ currentAgent ? currentAgent.name : t('agents.selectAgentToStart') }}</h1>
+        <p>{{ currentAgent ? translateAgentDescription(currentAgent) : t('agents.differentAgentCapabilities') }}</p>
       </div>
 
       <div class="chat-box" ref="messagesContainer">
@@ -106,12 +106,12 @@
             :is-loading="state.isProcessingRequest"
             :disabled="!currentAgent"
             :send-button-disabled="!userInput || !currentAgent || state.isProcessingRequest"
-            :placeholder="'输入问题...'"
+            :placeholder="t('agents.enterQuestion')"
             @send="handleSendMessage"
             @keydown="handleKeyDown"
           />
           <div class="bottom-actions">
-            <p class="note" @click="getAgentHistory">请注意辨别内容的可靠性</p>
+            <p class="note" @click="getAgentHistory">{{ t('agents.verifyReliability') }}</p>
           </div>
         </div>
       </div>
@@ -134,6 +134,7 @@ import RefsComponent from '@/components/RefsComponent.vue'
 import { chatApi, threadApi } from '@/apis/auth_api'
 import { PanelLeftOpen, MessageSquarePlus } from 'lucide-vue-next';
 import { useI18n } from 'vue-i18n';
+import { useAgentTranslation } from '@/utils/agentTranslation';
 
 // 新增props属性，允许父组件传入agentId
 const props = defineProps({
@@ -302,9 +303,9 @@ const createNewChat = async () => {
   try {
     // 调用API创建新对话
     state.creatingNewChat = true;
-    const response = await threadApi.createThread(props.agentId, '新对话');
+    const response = await threadApi.createThread(props.agentId, t('agents.newConversation'));
     if (!response || !response.id) {
-      throw new Error('创建对话失败');
+      throw new Error(t('agents.createConversationFailed'));
     }
 
     // 切换到新对话
@@ -315,7 +316,7 @@ const createNewChat = async () => {
     loadChatsList();
   } catch (error) {
     console.error('创建对话失败:', error);
-    message.error('创建对话失败');
+    message.error(t('agents.createConversationFailed'));
   } finally {
     state.creatingNewChat = false;
   }
@@ -357,7 +358,7 @@ const deleteChat = async (chatId) => {
     loadChatsList();
   } catch (error) {
     console.error('删除对话失败:', error);
-    message.error('删除对话失败');
+    message.error(t('agents.deleteConversationFailed'));
   }
 };
 
@@ -389,7 +390,7 @@ const renameChat = async (data) => {
     loadChatsList();
   } catch (error) {
     console.error('重命名对话失败:', error);
-    message.error('重命名对话失败');
+    message.error(t('agents.renameConversationFailed'));
   }
 };
 
@@ -397,7 +398,7 @@ const renameChat = async (data) => {
 
 // 重试消息
 const retryMessage = (msg) => {
-  message.info("重试消息开发中");
+  message.info(t('agents.retryInDevelopment'));
   return
 };
 
@@ -873,6 +874,7 @@ const mergeMessageChunk = (chunks) => {
 }
 
 const { t } = useI18n();
+const { translateAgentDescription } = useAgentTranslation();
 
 </script>
 

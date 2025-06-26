@@ -3,22 +3,19 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 export const useLanguageStore = defineStore('language', () => {
-  // Available languages with flags and names
+  // Available languages with names
   const availableLanguages = ref([
     {
       code: 'zh',
-      name: '中文',
-      flag: '🇨🇳'
+      name: '中文'
     },
     {
       code: 'en', 
-      name: 'English',
-      flag: '🇺🇸'
+      name: 'English'
     },
     {
       code: 'ja',
-      name: '日本語', 
-      flag: '🇯🇵'
+      name: '日本語'
     }
   ])
 
@@ -44,17 +41,11 @@ export const useLanguageStore = defineStore('language', () => {
     return lang ? lang.name : langCode
   }
 
-  function getLanguageFlag(code) {
-    const lang = availableLanguages.value.find(l => l.code === code)
-    return lang ? lang.flag : '🌐'
-  }
-
   return {
     availableLanguages,
     currentLanguage,
     currentLanguageInfo,
     setLanguage,
-    getLanguageName,
-    getLanguageFlag
+    getLanguageName
   }
 }) 

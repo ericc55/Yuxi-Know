@@ -10,7 +10,7 @@
           <template #expandIcon="{ isActive }">
             <caret-right-outlined :rotate="isActive ? 90 : 0" />
           </template>
-          <a-collapse-panel key="show" :header="message.status=='reasoning' ? '正在思考...' : '推理过程'" class="reasoning-header">
+          <a-collapse-panel key="show" :header="message.status=='reasoning' ? t('components.thinking') : t('components.reasoningProcess')" class="reasoning-header">
             <p class="reasoning-content">{{ parsedMessage.reasoning_content.trim() }}</p>
           </a-collapse-panel>
         </a-collapse>
@@ -20,7 +20,7 @@
       <!-- <div v-else-if="message.content" v-html="renderMarkdown(message)" class="message-md"></div> -->
       <MdPreview v-if="parsedMessage.content" ref="editorRef"
         editorId="preview-only"
-        previewTheme="github"
+        previewTheme="default"
         :showCodeRowNumber="false"
         :modelValue="parsedMessage.content"
         :key="message.id"
@@ -34,17 +34,17 @@
             <div class="tool-header" @click="toggleToolCall(toolCall.id)">
               <span v-if="!toolCall.tool_call_result">
                 <LoadingOutlined /> &nbsp;
-                <span>正在调用工具: </span>
+                <span>{{ t('components.callingTool') }}</span>
                 <span class="tool-name">{{ toolCall.name || toolCall.function.name }}</span>
               </span>
               <span v-else>
-                <ThunderboltOutlined /> &nbsp; 工具 <span class="tool-name">{{ toolCall.name || toolCall.function.name }}</span> 执行完成
+                <ThunderboltOutlined /> &nbsp; {{ t('components.tool') }} <span class="tool-name">{{ toolCall.name || toolCall.function.name }}</span> {{ t('components.executionCompleted') }}
               </span>
             </div>
             <div class="tool-content" v-show="expandedToolCalls.has(toolCall.id)">
               <div class="tool-params" v-if="toolCall.args || toolCall.function.arguments">
                 <div class="tool-params-content">
-                  <strong>参数:</strong> {{ toolCall.args || toolCall.function.arguments }}
+                  <strong>{{ t('components.parameters') }}</strong> {{ toolCall.args || toolCall.function.arguments }}
                 </div>
               </div>
               <div class="tool-result" v-if="toolCall.tool_call_result && toolCall.tool_call_result.content">
@@ -61,8 +61,8 @@
       </div>
 
       <div v-if="message.isStoppedByUser" class="retry-hint">
-        你停止生成了本次回答
-        <span class="retry-link" @click="emit('retryStoppedMessage', message.id)">重新编辑问题</span>
+        {{ t('chat.stoppedByUser') }}
+        <span class="retry-link" @click="emit('retryStoppedMessage', message.id)">{{ t('chat.retryStoppedMessage') }}</span>
       </div>
 
 
@@ -84,10 +84,12 @@ import { computed, ref } from 'vue';
 import { CaretRightOutlined, ThunderboltOutlined, LoadingOutlined } from '@ant-design/icons-vue';
 import RefsComponent from '@/components/RefsComponent.vue'
 import { ToolResultRenderer } from '@/components/ToolCallingResult'
-
+import { useI18n } from 'vue-i18n';
 
 import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css';
+
+const { t } = useI18n();
 
 const props = defineProps({
   // 消息角色：'user'|'assistant'|'sent'|'received'

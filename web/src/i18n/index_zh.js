@@ -79,15 +79,15 @@ export default {
   home: {
     title: '语析知识库',
     subtitle: '大模型驱动的知识库管理工具',
-    description: '结合知识库与知识图谱，提供更准确、更全面的回答',
+    description: '体验新一代AI知识问答系统，享受智能对话、快速知识检索和个性化问答体验。',
+    startChat: '开始聊天',
     powerfulQA: '强大的问答能力',
+    systemPreview: '系统预览',
     features: {
       flexibleKB: '📚 灵活知识库',
       knowledgeGraph: '🕸️ 知识图谱集成',
       multiModel: '🤖 多模型支持'
-    },
-    startChat: '开始对话',
-    githubStars: 'GitHub 星标'
+    }
   },
   chat: {
     welcome: '你好，我是语析，一个基于知识图谱的智能助手',
@@ -165,7 +165,28 @@ export default {
     noCheckpointer: '此智能体没有配置Checkpointer，功能可能无法正常工作，请参考：https://langchain-ai.github.io/langgraph/concepts/persistence/',
     selectedCount: '已选择 {count} 项',
     clearAll: '清除所有',
-    defaultValue: '默认值：{value}'
+    defaultValue: '默认值：{value}',
+    newConversation: '新对话',
+    loadingHistory: '正在加载历史记录...',
+    selectAgentToStart: '请选择一个智能体开始对话',
+    differentAgentCapabilities: '不同的智能体有不同的专长和能力',
+    enterQuestion: '输入问题...',
+    verifyReliability: '请注意辨别内容的可靠性',
+    createConversationFailed: '创建对话失败',
+    deleteConversationFailed: '删除对话失败',
+    renameConversationFailed: '重命名对话失败',
+    retryInDevelopment: '重试消息开发中',
+    rename: '重命名',
+    delete: '删除',
+    noConversationHistory: '暂无对话历史',
+    renameConversation: '重命名对话',
+    confirm: '确认',
+    cancel: '取消',
+    titleCannotBeEmpty: '标题不能为空',
+    // Agent descriptions override for backend hardcoded text
+    descriptions: {
+      chatbot: '基础的对话机器人，可以回答问题，默认不使用任何工具，可在配置中启用需要的工具。'
+    }
   },
   knowledgeBase: {
     title: '知识库',
@@ -436,6 +457,23 @@ export default {
     reasoning: '推理过程',
     thinking: '正在思考...',
     reasoningProcess: '推理过程',
+    callingTool: '正在调用工具: ',
+    tool: '工具',
+    executionCompleted: '执行完成',
+    parameters: '参数:',
+    exampleQueries: '示例查询：',
+    knowledgeBaseSearchResults: '知识库检索结果',
+    similarity: '相似度',
+    rerank: '重排序',
+    noRelevantContent: '未找到相关知识库内容',
+    documentSegment: '文档片段',
+    filename: '文件名',
+    similarityScore: '相似度分数',
+    rerankScore: '重排序分数',
+    documentContent: '文档内容',
+    customModels: '自定义模型',
+    addModel: '添加模型',
+    addOpenAICompatibleModel: '添加兼容 OpenAI 的模型',
     statusLabels: {
       init: '初始化中',
       loading: '加载中',
@@ -473,6 +511,7 @@ export default {
       enterModelName: '请输入模型名称',
       apiBase: 'API Base',
       enterApiBase: '请输入API Base',
+      apiKey: 'API Key',
       configureModel: '配置{providerName}模型',
       saveConfig: '保存配置',
       searchModels: '搜索模型...',
@@ -488,7 +527,16 @@ export default {
       configureApiKeyFirst: '请先在src/.env中配置对应APIKEY并重启服务',
       savingConfig: '正在保存配置...',
       modelConfigSaved: '模型配置已保存！',
-      saveConfigFailed: '保存配置失败'
+      saveConfigFailed: '保存配置失败',
+      loadingModels: '正在获取模型列表...',
+      selectModels: '选择 {providerName} 的模型',
+      modelSelectionDescription: '勾选您希望在系统中启用的模型，请注意，列表中可能包含非对话模型，请仔细甄别。',
+      selectedModelsCount: '已选择 {count} 个模型',
+      filteredModelsCount: '（当前筛选显示 {count} 个）',
+      openAICompatibleDescription: '添加的模型是兼容 OpenAI 的模型，比如 vllm，Ollama。',
+      modelNameDescription: '调用的模型的名称',
+      apiBaseDescription: '比如 http://localhost:11434/v1',
+      requiresConfiguration: '需配置'
     }
   }
 }; 

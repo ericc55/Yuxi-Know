@@ -33,7 +33,8 @@ export default {
     debug: 'Debug',
     debugPanel: 'Debug Panel',
     showTotal: 'Total {total} items',
-    addSuccess: 'Added successfully'
+    addSuccess: 'Added successfully',
+    noDataAvailable: 'No data available'
   },
   navbar: {
     brand: 'Yuxi-Know',
@@ -79,15 +80,15 @@ export default {
   home: {
     title: 'Yuxi-Know',
     subtitle: 'AI-Powered Knowledge Management Tool',
-    description: 'Combining knowledge base with knowledge graph for more accurate and comprehensive answers',
-    powerfulQA: 'Powerful Q&A Capabilities',
+    description: 'Experience the new generation AI knowledge Q&A system, enjoy intelligent conversations, fast knowledge retrieval and personalized Q&A experience.',
+    startChat: 'Start Chat',
+    powerfulQA: 'Powerful Q&A Capability',
+    systemPreview: 'System Preview',
     features: {
       flexibleKB: '📚 Flexible Knowledge Base',
       knowledgeGraph: '🕸️ Knowledge Graph Integration',
       multiModel: '🤖 Multi-Model Support'
-    },
-    startChat: 'Start Conversation',
-    githubStars: 'GitHub Stars'
+    }
   },
   chat: {
     welcome: 'Hello, I am Yuxi, an intelligent assistant based on knowledge graph',
@@ -129,7 +130,14 @@ export default {
     generating: 'Generating...',
     generatingReply: 'Generating reply...',
     stoppedByUser: 'You stopped generating this response',
-    retryStoppedMessage: 'Edit question again'
+    retryStoppedMessage: 'Edit question again',
+    rename: 'Rename',
+    delete: 'Delete',
+    noConversationHistory: 'No conversation history',
+    renameConversation: 'Rename Conversation',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    titleCannotBeEmpty: 'Title cannot be empty'
   },
   agents: {
     title: 'AI Agents',
@@ -165,7 +173,20 @@ export default {
     noCheckpointer: 'This agent has no Checkpointer configured, functionality may not work properly, refer to: https://langchain-ai.github.io/langgraph/concepts/persistence/',
     selectedCount: 'Selected {count} items',
     clearAll: 'Clear All',
-    defaultValue: 'Default: {value}'
+    defaultValue: 'Default: {value}',
+    newConversation: 'New Conversation',
+    loadingHistory: 'Loading history...',
+    selectAgentToStart: 'Please select an agent to start conversation',
+    differentAgentCapabilities: 'Different agents have different specialties and capabilities',
+    enterQuestion: 'Enter question...',
+    verifyReliability: 'Please verify the reliability of the content',
+    createConversationFailed: 'Failed to create conversation',
+    deleteConversationFailed: 'Failed to delete conversation',
+    renameConversationFailed: 'Failed to rename conversation',
+    retryInDevelopment: 'Retry message feature is in development',
+    descriptions: {
+      chatbot: 'Basic conversational robot that can answer questions. No tools are used by default, but required tools can be enabled in the configuration.'
+    }
   },
   knowledgeBase: {
     title: 'Knowledge Base',
@@ -436,6 +457,23 @@ export default {
     reasoning: 'Reasoning',
     thinking: 'Thinking...',
     reasoningProcess: 'Reasoning Process',
+    callingTool: 'Calling tool: ',
+    tool: 'Tool',
+    executionCompleted: 'execution completed',
+    parameters: 'Parameters:',
+    exampleQueries: 'Example Queries:',
+    knowledgeBaseSearchResults: 'Knowledge Base Search Results',
+    similarity: 'Similarity',
+    rerank: 'Rerank',
+    noRelevantContent: 'No relevant knowledge base content found',
+    documentSegment: 'Document Segment',
+    filename: 'Filename',
+    similarityScore: 'Similarity Score',
+    rerankScore: 'Rerank Score',
+    documentContent: 'Document Content',
+    customModels: 'Custom Models',
+    addModel: 'Add Model',
+    addOpenAICompatibleModel: 'Add OpenAI-compatible model',
     statusLabels: {
       init: 'Initializing',
       loading: 'Loading',
@@ -473,6 +511,7 @@ export default {
       enterModelName: 'Please enter model name',
       apiBase: 'API Base',
       enterApiBase: 'Please enter API Base',
+      apiKey: 'API Key',
       configureModel: 'Configure {providerName} Model',
       saveConfig: 'Save Configuration',
       searchModels: 'Search models...',
@@ -488,7 +527,16 @@ export default {
       configureApiKeyFirst: 'Please configure the corresponding APIKEY in src/.env and restart the service',
       savingConfig: 'Saving configuration...',
       modelConfigSaved: 'Model configuration saved!',
-      saveConfigFailed: 'Failed to save configuration'
+      saveConfigFailed: 'Failed to save configuration',
+      loadingModels: 'Loading model list...',
+      selectModels: 'Select {providerName} models',
+      modelSelectionDescription: 'Check the models you want to enable in the system. Note that the list may contain non-conversational models, please review carefully.',
+      selectedModelsCount: 'Selected {count} models',
+      filteredModelsCount: '(Currently showing {count} filtered)',
+      openAICompatibleDescription: 'The added models are OpenAI-compatible models, such as vllm, Ollama.',
+      modelNameDescription: 'The name of the model to call',
+      apiBaseDescription: 'For example http://localhost:11434/v1',
+      requiresConfiguration: 'Requires configuration'
     }
   }
 }; 

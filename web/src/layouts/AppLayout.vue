@@ -3,7 +3,14 @@ import { ref, reactive, KeepAlive, onMounted, computed } from 'vue'
 import { RouterLink, RouterView, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import {
-  GithubOutlined,
+  UserOutlined,
+  CommentOutlined,
+  DatabaseOutlined,
+  RobotOutlined,
+  PartitionOutlined,
+  SettingOutlined,
+  PoweroffOutlined,
+  ApiOutlined,
   BugOutlined,
   ExclamationCircleOutlined,
 } from '@ant-design/icons-vue'
@@ -20,15 +27,17 @@ const { t } = useI18n()
 const configStore = useConfigStore()
 const databaseStore = useDatabaseStore()
 const infoStore = useInfoStore()
+const { locale } = useI18n()
 
 const layoutSettings = reactive({
   showDebug: false,
   useTopBar: false, // 是否使用顶栏
 })
 
-// Add state for GitHub stars
-const githubStars = ref(0)
-const isLoadingStars = ref(false)
+// Computed property for language-specific styling
+const languageClass = computed(() => {
+  return `lang-${locale.value}`
+})
 
 const getRemoteConfig = () => {
   configStore.refreshConfig()
@@ -41,28 +50,12 @@ const getRemoteDatabase = () => {
   databaseStore.refreshDatabase()
 }
 
-// Fetch GitHub stars count
-const fetchGithubStars = async () => {
-  try {
-    isLoadingStars.value = true
-    // 公共API，可以直接使用fetch
-    const response = await fetch('https://api.github.com/repos/xerrors/Yuxi-Know')
-    const data = await response.json()
-    githubStars.value = data.stargazers_count
-  } catch (error) {
-    console.error('获取GitHub stars失败:', error)
-  } finally {
-    isLoadingStars.value = false
-  }
-}
-
 onMounted(async () => {
   // 加载信息配置
   await infoStore.loadInfoConfig()
   // 加载其他配置
   getRemoteConfig()
   getRemoteDatabase()
-  fetchGithubStars() // Fetch GitHub stars on mount
 })
 
 // 打印当前页面的路由信息，使用 vue3 的 setup composition API
@@ -97,7 +90,7 @@ const mainList = computed(() => [{
 </script>
 
 <template>
-  <div class="app-layout" :class="{ 'use-top-bar': layoutSettings.useTopBar }">
+  <div class="app-layout" :class="{ 'use-top-bar': layoutSettings.useTopBar, [languageClass]: true }">
     <div class="debug-panel" >
       <a-float-button
         @click="layoutSettings.showDebug = !layoutSettings.showDebug"
@@ -107,7 +100,7 @@ const mainList = computed(() => [{
         }"
       >
         <template #icon>
-          <BugOutlined />
+          <UserOutlined />
         </template>
       </a-float-button>
       <a-drawer
@@ -143,33 +136,12 @@ const mainList = computed(() => [{
         <a-tooltip placement="right">
           <template #title>{{ t('errors.serverError') }}</template>
           <div class="nav-item warning" v-if="!configStore.config._config_items">
-            <component class="icon" :is="ExclamationCircleOutlined" />
+            <component class="icon" :is="CommentOutlined" />
             <span class="text">{{ t('common.warning') }}</span>
           </div>
         </a-tooltip>
       </div>
       <div class="fill" style="flex-grow: 1;"></div>
-
-
-      <div class="github nav-item">
-        <a-tooltip placement="right">
-          <template #title>{{ t('home.githubStars') }}</template>
-          <a href="https://github.com/xerrors/Yuxi-Know" target="_blank" class="github-link">
-            <GithubOutlined class="icon" style="color: #222;"/>
-            <span v-if="githubStars > 0" class="github-stars">
-              <span class="star-count">{{ (githubStars / 1000).toFixed(1) }}k</span>
-            </span>
-          </a>
-        </a-tooltip>
-      </div>
-      <!-- <div class="nav-item api-docs">
-        <a-tooltip placement="right">
-          <template #title>接口文档 {{ apiDocsUrl }}</template>
-          <a :href="apiDocsUrl" target="_blank" class="github-link">
-            <ApiOutlined class="icon" style="color: #222;"/>
-          </a>
-        </a-tooltip>
-      </div> -->
 
       <!-- 用户信息组件 -->
       <div class="nav-item user-info">
@@ -190,7 +162,7 @@ const mainList = computed(() => [{
       <RouterLink class="nav-item setting" to="/setting" active-class="active">
         <a-tooltip placement="right">
           <template #title>{{ t('navbar.settings') }}</template>
-          <Settings />
+          <SettingOutlined />
         </a-tooltip>
       </RouterLink>
     </div>
@@ -212,7 +184,7 @@ const mainList = computed(() => [{
 @import '@/assets/main.css';
 
 :root {
-  --header-width: 60px;
+  --header-width: 85px;
 }
 
 .app-layout {
@@ -233,6 +205,24 @@ const mainList = computed(() => [{
     bottom: 50px;
     border-radius: 20px 0 0 20px;
     cursor: pointer;
+  }
+  
+  /* Language-specific adjustments for navigation text */
+  &.lang-en .nav-item .text {
+    font-size: 10px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  
+  &.lang-ja .nav-item .text {
+    font-size: 10px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  
+  &.lang-zh .nav-item .text {
+    font-size: 11px;
+    line-height: 1.2;
   }
 }
 
@@ -286,50 +276,18 @@ div.header, #app-router-view {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 52px;
-    padding: 4px;
-    padding-top: 10px;
+    width: 72px;
+    min-height: 60px;
+    padding: 6px 4px;
     border: 1px solid transparent;
     border-radius: 8px;
     background-color: transparent;
     color: #222;
     font-size: 20px;
     transition: background-color 0.2s ease-in-out;
-    margin: 0;
+    margin: 2px 0;
     text-decoration: none;
     cursor: pointer;
-
-    &.github {
-      padding: 10px 12px;
-      &:hover {
-        background-color: transparent;
-        border: 1px solid transparent;
-      }
-
-      .github-link {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        color: inherit;
-      }
-
-      .github-stars {
-        display: flex;
-        align-items: center;
-        font-size: 12px;
-        margin-top: 4px;
-
-        .star-icon {
-          color: #f0a742;
-          font-size: 12px;
-          margin-right: 2px;
-        }
-
-        .star-count {
-          font-weight: 600;
-        }
-      }
-    }
 
     &.api-docs {
       padding: 10px 12px;
@@ -351,9 +309,17 @@ div.header, #app-router-view {
     }
 
     .text {
-      font-size: 12px;
+      font-size: 11px;
       margin-top: 4px;
       text-align: center;
+      line-height: 1.2;
+      max-width: 68px;
+      word-wrap: break-word;
+      hyphens: auto;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
   }
 
@@ -376,8 +342,8 @@ div.header, #app-router-view {
   justify-content: space-between;
   align-items: center;
   position: relative;
-  height: 45px;
-  gap: 16px;
+  height: auto;
+  gap: 8px;
 }
 
 @media (max-width: 520px) {
@@ -397,7 +363,7 @@ div.header, #app-router-view {
     display: flex;
     flex-direction: row;
     width: 100%;
-    padding: 0 20px;
+    padding: 0 10px;
     justify-content: space-around;
     align-items: center;
     flex: 0 0 60px;
@@ -406,18 +372,40 @@ div.header, #app-router-view {
 
     .nav-item {
       text-decoration: none;
-      width: 40px;
+      min-width: 60px;
       color: var(--gray-900);
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: bold;
       transition: color 0.1s ease-in-out, font-size 0.1s ease-in-out;
+      text-align: center;
+      line-height: 1.2;
 
       &.active {
         color: black;
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
     }
   }
+  
+  /* Mobile language-specific adjustments */
+  .app-layout.lang-en div.header-mobile .nav-item {
+    font-size: 0.8rem;
+    line-height: 1.1;
+    
+    &.active {
+      font-size: 0.9rem;
+    }
+  }
+  
+  .app-layout.lang-ja div.header-mobile .nav-item {
+    font-size: 0.8rem;
+    line-height: 1.1;
+    
+    &.active {
+      font-size: 0.9rem;
+    }
+  }
+  
   .app-layout .chat-box::webkit-scrollbar {
     width: 0;
   }
@@ -497,7 +485,7 @@ div.header, #app-router-view {
       font-size: 15px;
     }
 
-    &.github, &.setting {
+    &.setting {
       padding: 8px 12px;
 
       .icon {
@@ -507,25 +495,6 @@ div.header, #app-router-view {
 
       &.active {
         color: var(--main-600);
-      }
-    }
-
-    &.github {
-      a {
-        display: flex;
-        align-items: center;
-      }
-
-      .github-stars {
-        display: flex;
-        align-items: center;
-        margin-left: 6px;
-
-        .star-icon {
-          color: #f0a742;
-          font-size: 14px;
-          margin-right: 2px;
-        }
       }
     }
   }

@@ -19,9 +19,23 @@ from src.agents.tools_factory import get_all_tools
 
 class ChatbotAgent(BaseAgent):
     name = "chatbot"
-    description = "基础的对话机器人，可以回答问题，默认不使用任何工具，可在配置中启用需要的工具。"
+    
+    # Multi-language descriptions
+    descriptions = {
+        "en": "Basic conversational robot that can answer questions. No tools are used by default, but required tools can be enabled in the configuration.",
+        "zh": "基础的对话机器人，可以回答问题，默认不使用任何工具，可在配置中启用需要的工具。",
+        "ja": "ベーシックな対話ロボット。質問に答えることができます。デフォルトではツールを使用しませんが、設定で必要なツールを有効にできます。"
+    }
+    
+    # Default description (can be overridden by get_description method)
+    description = descriptions.get("zh", "Basic conversational robot")
+    
     requirements = ["TAVILY_API_KEY", "ZHIPUAI_API_KEY"]
     config_schema = ChatbotConfiguration
+
+    def get_description(self, language="zh"):
+        """Get localized description based on language parameter"""
+        return self.descriptions.get(language, self.descriptions.get("zh", self.description))
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

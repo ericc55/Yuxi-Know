@@ -50,7 +50,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: '输入问题...'
+    default: ''
   },
   isLoading: {
     type: Boolean,

@@ -1,7 +1,7 @@
 <template>
   <div class="knowledge-base-result">
     <div class="kb-header">
-      <h4><FileTextOutlined /> 知识库检索结果</h4>
+      <h4><FileTextOutlined /> {{ t('components.knowledgeBaseSearchResults') }}</h4>
       <div class="result-summary">
         {{ t('knowledgeBaseResult.found', { 
           segmentCount: data.length, 
@@ -47,8 +47,8 @@
             <div class="chunk-summary">
               <span class="chunk-index">#{{ index + 1 }}</span>
               <div class="chunk-scores">
-                <span class="score-item">相似度 {{ (chunk.distance * 100).toFixed(0) }}%</span>
-                <span v-if="chunk.rerank_score" class="score-item">重排序 {{ (chunk.rerank_score * 100).toFixed(0) }}%</span>
+                <span class="score-item">{{ t('components.similarity') }} {{ (chunk.distance * 100).toFixed(0) }}%</span>
+                <span v-if="chunk.rerank_score" class="score-item">{{ t('components.rerank') }} {{ (chunk.rerank_score * 100).toFixed(0) }}%</span>
               </div>
               <span class="chunk-preview">{{ getPreviewText(chunk.entity.text) }}</span>
               <EyeOutlined class="view-icon" />
@@ -59,13 +59,13 @@
     </div>
 
     <div v-if="data.length === 0" class="no-results">
-      <p>未找到相关知识库内容</p>
+      <p>{{ t('components.noRelevantContent') }}</p>
     </div>
 
     <!-- 弹窗展示chunk详细信息 -->
     <a-modal
       v-model:open="modalVisible"
-      :title="`文档片段 #${selectedChunk?.index} - ${selectedChunk?.data?.file?.filename}`"
+      :title="`${t('components.documentSegment')} #${selectedChunk?.index} - ${selectedChunk?.data?.file?.filename}`"
       width="800px"
       :footer="null"
       class="chunk-detail-modal"
@@ -74,7 +74,7 @@
         <div class="detail-header">
           <div class="detail-scores">
             <div class="score-card">
-              <div class="score-label">相似度分数</div>
+              <div class="score-label">{{ t('components.similarityScore') }}</div>
               <div class="score-value-large">{{ (selectedChunk.data.distance * 100).toFixed(1) }}%</div>
               <a-progress
                 :percent="getPercent(selectedChunk.data.distance)"
@@ -84,7 +84,7 @@
               />
             </div>
             <div v-if="selectedChunk.data.rerank_score" class="score-card">
-              <div class="score-label">重排序分数</div>
+              <div class="score-label">{{ t('components.rerankScore') }}</div>
               <div class="score-value-large">{{ (selectedChunk.data.rerank_score * 100).toFixed(1) }}%</div>
               <a-progress
                 :percent="getPercent(selectedChunk.data.rerank_score)"
@@ -100,7 +100,7 @@
         </div>
 
         <div class="detail-content">
-          <h5>文档内容</h5>
+          <h5>{{ t('components.documentContent') }}</h5>
           <div class="content-text">{{ selectedChunk.data.entity.text }}</div>
         </div>
       </div>

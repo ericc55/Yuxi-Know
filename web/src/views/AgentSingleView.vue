@@ -3,7 +3,10 @@
     <!-- 智能体聊天界面 -->
     <AgentChatComponent :agent-id="agentId">
       <template #header-right>
-        <UserInfoComponent />
+        <div class="header-controls">
+          <LanguageSwitcher />
+          <UserInfoComponent />
+        </div>
       </template>
     </AgentChatComponent>
   </div>
@@ -14,6 +17,7 @@ import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import AgentChatComponent from '@/components/AgentChatComponent.vue';
 import UserInfoComponent from '@/components/UserInfoComponent.vue';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import sidebarLeftIcon from '@/assets/icons/sidebar_left.svg';
 import sidebarRightIcon from '@/assets/icons/sidebar_right.svg';
 
@@ -43,6 +47,12 @@ const toggleUserInfo = () => {
   position: relative;
   display: flex;
   flex-direction: row;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .user-info-wrapper {

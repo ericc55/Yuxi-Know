@@ -10,7 +10,7 @@
     <div v-else>
       <div class="model-provider-card custom-models-card">
         <div class="card-header">
-          <h3>自定义模型</h3>
+          <h3>{{ t('components.customModels') }}</h3>
         </div>
         <div class="card-body">
           <div class="custom-model" v-for="(item, key) in configStore.config.custom_models" :key="item.custom_id">
@@ -33,9 +33,9 @@
           </div>
           <div class="card-models custom-model add-model" @click="prepareToAddCustomModel">
             <div class="card-models__header">
-              <div class="name"> + 添加模型</div>
+              <div class="name"> + {{ t('components.addModel') }}</div>
             </div>
-            <div class="api_base">添加兼容 OpenAI 的模型</div>
+            <div class="api_base">{{ t('components.addOpenAICompatibleModel') }}</div>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
             type="text"
             class="expand-button"
             @click.stop="openProviderConfig(item)"
-            title="配置模型提供商"
+            :title="t('components.modelProviders.configureProvider')"
           >
             <SettingOutlined />
           </a-button>
@@ -76,7 +76,7 @@
       <div class="model-provider-card unconfigured-provider" v-for="(item, key) in notModelKeys" :key="key">
         <div class="card-header">
           <div class="model-icon">
-            <img :src="modelIcons[item] || modelIcons.default" alt="模型图标">
+            <img :src="modelIcons[item] || modelIcons.default" :alt="t('components.modelProviders.modelIcon')">
           </div>
           <div class="model-title-container">
             <h3 style="font-weight: 400">{{ modelNames[item]?.name || item }}</h3>
@@ -88,12 +88,12 @@
             type="text"
             class="config-button"
             @click.stop="openProviderConfig(item)"
-            title="配置模型提供商"
+            :title="t('components.modelProviders.configureProvider')"
           >
             <SettingOutlined />
           </a-button>
           <div class="missing-keys">
-            需配置<span v-for="(key, idx) in modelNames[item]?.env || []" :key="idx">{{ key }}</span>
+            {{ t('components.modelProviders.requiresConfiguration') }}<span v-for="(key, idx) in modelNames[item]?.env || []" :key="idx">{{ key }}</span>
           </div>
         </div>
       </div>
@@ -103,7 +103,7 @@
     <a-modal
       class="custom-model-modal"
       v-model:open="customModel.visible"
-      :title="t('components.modelProviders.configureModel', { providerName: providerConfig.providerName })"
+      :title="customModel.edit_type === 'add' ? t('components.modelProviders.addCustomModel') : t('components.modelProviders.editCustomModel')"
       @ok="handleAddOrEditCustomModel"
       @cancel="handleCancelCustomModel"
       :okText="t('components.modelProviders.saveConfig')"
@@ -111,14 +111,14 @@
       :okButtonProps="{disabled: !customModel.name || !customModel.api_base}"
       :ok-type="'primary'"
     >
-      <p>添加的模型是兼容 OpenAI 的模型，比如 vllm，Ollama。</p>
+      <p>{{ t('components.modelProviders.openAICompatibleDescription') }}</p>
       <a-form :model="customModel" layout="vertical">
         <a-form-item :label="t('components.modelProviders.modelName')" name="name" :rules="[{ required: true, message: t('components.modelProviders.enterModelName') }]">
-          <p class="form-item-description">调用的模型的名称</p>
+          <p class="form-item-description">{{ t('components.modelProviders.modelNameDescription') }}</p>
           <a-input v-model:value="customModel.name" :disabled="customModel.edit_type == 'edit'"/>
         </a-form-item>
         <a-form-item :label="t('components.modelProviders.apiBase')" name="api_base" :rules="[{ required: true, message: t('components.modelProviders.enterApiBase') }]">
-          <p class="form-item-description">比如 <code>http://localhost:11434/v1</code></p>
+          <p class="form-item-description">{{ t('components.modelProviders.apiBaseDescription') }}</p>
           <a-input v-model:value="customModel.api_base" />
         </a-form-item>
         <a-form-item :label="t('components.modelProviders.apiKey')" name="api_key">
@@ -141,12 +141,12 @@
     >
       <div v-if="providerConfig.loading" class="modal-loading-container">
         <a-spin :indicator="h(LoadingOutlined, { style: { fontSize: '32px', color: 'var(--main-color)' }})" />
-        <div class="loading-text">正在获取模型列表...</div>
+        <div class="loading-text">{{ t('components.modelProviders.loadingModels') }}</div>
       </div>
       <div v-else class="modal-config-content">
         <div class="modal-config-header">
-          <h3>选择 {{ providerConfig.providerName }} 的模型</h3>
-          <p class="description">勾选您希望在系统中启用的模型，请注意，列表中可能包含非对话模型，请仔细甄别。</p>
+          <h3>{{ t('components.modelProviders.selectModels', { providerName: providerConfig.providerName }) }}</h3>
+          <p class="description">{{ t('components.modelProviders.modelSelectionDescription') }}</p>
         </div>
 
         <div class="modal-models-section">
@@ -164,9 +164,9 @@
 
           <!-- 显示选中统计信息 -->
           <div class="selection-summary">
-            <span>已选择 {{ providerConfig.selectedModels.length }} 个模型</span>
+            <span>{{ t('components.modelProviders.selectedModelsCount', { count: providerConfig.selectedModels.length }) }}</span>
             <span v-if="providerConfig.searchQuery" class="filter-info">
-              （当前筛选显示 {{ filteredModels.length }} 个）
+              {{ t('components.modelProviders.filteredModelsCount', { count: filteredModels.length }) }}
             </span>
           </div>
 

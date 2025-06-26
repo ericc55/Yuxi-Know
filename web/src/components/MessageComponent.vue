@@ -45,7 +45,7 @@
       <!-- <div v-else-if="message.content" v-html="renderMarkdown(message)" class="message-md"></div> -->
       <MdPreview v-else-if="message.content" ref="editorRef"
         editorId="preview-only"
-        previewTheme="github"
+        previewTheme="default"
         :showCodeRowNumber="false"
         :modelValue="message.content"
         :key="message.id"

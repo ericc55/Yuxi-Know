@@ -59,7 +59,7 @@
       <div class="sidebar" :class="{ 'is-open': state.agentSiderbarConfigOpen }">
         <div class="agent-info">
           <h3 @click="toggleDebugMode">{{ t('agents.description') }}</h3>
-          <p>{{ selectedAgent.description }}</p>
+          <p>{{ translateAgentDescription(selectedAgent) }}</p>
           <pre v-if="state.debug_mode">{{ selectedAgent }}</pre>
 
           <!-- 添加requirements显示部分 -->
@@ -201,11 +201,13 @@ import ModelSelectorComponent from '@/components/ModelSelectorComponent.vue';
 import { useUserStore } from '@/stores/user';
 import { chatApi } from '@/apis/auth_api';
 import { systemConfigApi } from '@/apis/admin_api';
+import { useAgentTranslation } from '@/utils/agentTranslation';
 
 // 路由
 const router = useRouter();
 const userStore = useUserStore();
 const { t } = useI18n();
+const { translateAgentDescription } = useAgentTranslation();
 
 // 状态
 const agents = ref({});

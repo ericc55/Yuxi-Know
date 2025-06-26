@@ -3,8 +3,7 @@
     <a-dropdown placement="bottom">
       <a class="ant-dropdown-link" @click.prevent>
         <div class="current-language">
-          <span class="flag">{{ currentLanguage.flag }}</span>
-          <span class="name">{{ currentLanguage.name }}</span>
+          <span class="code">{{ currentLanguage.code.toUpperCase() }}</span>
           <DownOutlined />
         </div>
       </a>
@@ -15,7 +14,6 @@
             :key="lang.code"
             :class="{ active: lang.code === languageStore.currentLanguage }"
           >
-            <span class="flag">{{ lang.flag }}</span>
             <span class="name">{{ lang.name }}</span>
           </a-menu-item>
         </a-menu>
@@ -59,12 +57,11 @@ const handleLanguageChange = ({ key }) => {
     cursor: pointer;
     font-weight: 500;
 
-    .flag {
-      font-size: 1.2rem;
-    }
-
-    .name {
+    .code {
       color: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
     }
   }
 }
@@ -83,10 +80,6 @@ const handleLanguageChange = ({ key }) => {
 
     &:hover {
       background-color: var(--main-light-5);
-    }
-
-    .flag {
-      font-size: 1.1rem;
     }
 
     .name {
