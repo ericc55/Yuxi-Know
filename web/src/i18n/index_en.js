@@ -95,8 +95,8 @@ export default {
     newConversation: 'New Conversation',
     examples: {
       example1: 'Write a simple bubble sort algorithm',
-      example2: 'How is the weather in Wuxi today?',
-      example3: 'Tell me about Dream of the Red Chamber',
+      example2: 'How is the weather in Boston today?',
+      example3: 'Tell me about CFN',
       example4: 'What day is today?'
     },
     inputPlaceholder: 'Type your message...',
