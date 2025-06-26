@@ -1,11 +1,10 @@
 import os
 from datetime import datetime
-
-import pytz
+from zoneinfo import ZoneInfo
 
 from loguru import logger as loguru_logger
 
-DATETIME = datetime.now(pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d-%H%M%S')
+DATETIME = datetime.now(ZoneInfo('Asia/Tokyo')).strftime('%Y-%m-%d-%H%M%S')
 # DATETIME = "debug" # 为了方便，调试的时候输出到 debug.log 文件
 LOG_FILE = f'saves/log/project-{DATETIME}.log'
 def setup_logger(name, level="DEBUG", console=True):

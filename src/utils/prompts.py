@@ -1,7 +1,11 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 def get_system_prompt():
-    return (f"当前时间：{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+    # 使用日本标准时间 (JST, UTC+9)
+    jst = ZoneInfo('Asia/Tokyo')
+    current_time = datetime.now(jst)
+    return (f"当前时间：{current_time.strftime('%Y-%m-%d %H:%M:%S')}\n")
 
 
 knowbase_qa_template = """
