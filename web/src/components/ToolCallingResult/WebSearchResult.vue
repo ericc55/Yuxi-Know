@@ -1,10 +1,10 @@
 <template>
   <div class="web-search-result">
     <div class="search-header">
-      <h4><GlobalOutlined /> 网页搜索结果</h4>
+      <h4><GlobalOutlined /> {{ t('components.webSearchResults') }}</h4>
       <div class="search-meta">
-        <span class="query-text">查询: {{ data.query }}</span>
-        <span class="response-time">响应时间: {{ data.response_time }}s</span>
+        <span class="query-text">{{ t('components.queryText') }}: {{ data.query }}</span>
+        <span class="response-time">{{ t('components.responseTime') }}: {{ data.response_time }}s</span>
       </div>
     </div>
 
@@ -20,7 +20,7 @@
               {{ result.title }}
             </a>
           </h5>
-          <span class="result-score">相关度: {{ (result.score * 100).toFixed(1) }}%</span>
+          <span class="result-score">{{ t('components.relevance') }}: {{ (result.score * 100).toFixed(1) }}%</span>
         </div>
 
         <div class="result-meta">
@@ -37,13 +37,16 @@
     </div>
 
     <div v-if="data.results.length === 0" class="no-results">
-      <p>未找到相关搜索结果</p>
+      <p>{{ t('components.noSearchResults') }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
 import { GlobalOutlined } from '@ant-design/icons-vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   data: {

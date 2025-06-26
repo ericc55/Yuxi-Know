@@ -8,7 +8,7 @@
       </span>
       <span
         v-if="showKey('copy')"
-        class="item btn" @click="copyText(msg.content)" title="复制"><CopyOutlined /></span>
+        class="item btn" @click="copyText(msg.content)" :title="t('components.copy')"><CopyOutlined /></span>
       <span
         v-if="showKey('regenerate')"
         class="item btn" @click="regenerateMessage()" title="重新生成"><ReloadOutlined /></span>
@@ -17,21 +17,21 @@
         class="item btn"
         @click="openGlobalRefs('graph')"
       >
-        <DeploymentUnitOutlined /> 关系图
+        <DeploymentUnitOutlined /> {{ t('components.relationshipGraph') }}
       </span>
       <span
         class="item btn"
         v-if="isLatestMessage && showKey('webSearch') && msg.refs?.web_search.results.length > 0"
         @click="openGlobalRefs('webSearch')"
       >
-        <GlobalOutlined /> 网页搜索 {{ msg.refs.web_search?.results.length }}
+        <GlobalOutlined /> {{ t('chat.webSearch') }} {{ msg.refs.web_search?.results.length }}
       </span>
       <span
         class="item btn"
         v-if="isLatestMessage && showKey('knowledgeBase') && hasKnowledgeBaseData(msg)"
         @click="openGlobalRefs('knowledgeBase')"
       >
-        <FileTextOutlined /> 知识库
+        <FileTextOutlined /> {{ t('chat.knowledgeBase') }}
       </span>
     </div>
   </div>

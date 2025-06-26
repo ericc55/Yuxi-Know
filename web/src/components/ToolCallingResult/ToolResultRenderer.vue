@@ -1,6 +1,6 @@
 <template>
   <div class="tool-result-renderer">
-    <!-- 网页搜索结果 -->
+    <!-- Web search results -->
     <WebSearchResult
       v-if="isWebSearchResult"
       :data="parsedData"
@@ -27,7 +27,7 @@
     <!-- 默认的原始数据展示 -->
     <div v-else class="default-result">
       <div class="default-header">
-        <h4><ToolOutlined /> {{ toolName }} 执行结果</h4>
+        <h4><ToolOutlined /> {{ toolName }} {{ t('components.executionResult') }}</h4>
       </div>
       <div class="default-content">
         <pre>{{ formatData(parsedData) }}</pre>
@@ -39,10 +39,13 @@
 <script setup>
 import { computed } from 'vue'
 import { ToolOutlined } from '@ant-design/icons-vue'
+import { useI18n } from 'vue-i18n'
 import WebSearchResult from './WebSearchResult.vue'
 import KnowledgeBaseResult from './KnowledgeBaseResult.vue'
 import KnowledgeGraphResult from './KnowledgeGraphResult.vue'
 import CalculatorResult from './CalculatorResult.vue'
+
+const { t } = useI18n()
 
 const props = defineProps({
   toolName: {
@@ -67,7 +70,7 @@ const parsedData = computed(() => {
   return props.resultContent
 })
 
-// 判断是否为网页搜索结果
+// Check if it's a web search result
 const isWebSearchResult = computed(() => {
   const toolNameLower = props.toolName.toLowerCase()
   const isWebSearchTool = toolNameLower.includes('search') ||
@@ -84,7 +87,7 @@ const isWebSearchResult = computed(() => {
          'query' in data
 })
 
-// 判断是否为知识库检索结果
+// Check if it's a knowledge base retrieval result
 const isKnowledgeBaseResult = computed(() => {
   const toolNameLower = props.toolName.toLowerCase()
   const isKnowledgeBaseTool = toolNameLower.includes('retrieve') ||
@@ -105,7 +108,7 @@ const isKnowledgeBaseResult = computed(() => {
          )
 })
 
-// 判断是否为知识图谱查询结果
+// Check if it's a knowledge graph query result
 const isKnowledgeGraphResult = computed(() => {
   const toolNameLower = props.toolName.toLowerCase()
   const isGraphTool = toolNameLower.includes('graph') ||
@@ -128,7 +131,7 @@ const isKnowledgeGraphResult = computed(() => {
          )
 })
 
-// 判断是否为计算器结果
+// Check if it's a calculator result
 const isCalculatorResult = computed(() => {
   const toolNameLower = props.toolName.toLowerCase()
   const isCalculatorTool = toolNameLower.includes('calculator') ||

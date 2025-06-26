@@ -474,6 +474,19 @@ export default {
     customModels: '自定义模型',
     addModel: '添加模型',
     addOpenAICompatibleModel: '添加兼容 OpenAI 的模型',
+    referenceInfo: '参考信息',
+    relationshipGraph: '关系图',
+    webSearchResults: '网页搜索结果',
+    noGraphData: '当前对话没有关系图数据',
+    noWebSearchData: '当前对话没有网页搜索数据',
+    noKnowledgeBaseData: '当前对话没有知识库查询数据',
+    queryText: '查询',
+    responseTime: '响应时间',
+    relevance: '相关度',
+    source: '来源',
+    noSearchResults: '未找到相关搜索结果',
+    copy: '复制',
+    executionResult: '执行结果',
     statusLabels: {
       init: '初始化中',
       loading: '加载中',
@@ -536,7 +549,7 @@ export default {
       openAICompatibleDescription: '添加的模型是兼容 OpenAI 的模型，比如 vllm，Ollama。',
       modelNameDescription: '调用的模型的名称',
       apiBaseDescription: '比如 http://localhost:11434/v1',
-      requiresConfiguration: '需配置'
+      requiresConfiguration: '需要配置'
     }
   }
 }; 

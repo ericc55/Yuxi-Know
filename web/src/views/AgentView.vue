@@ -243,7 +243,7 @@ const setAsDefaultAgent = async () => {
     defaultAgentId.value = selectedAgentId.value;
     message.success(t('agents.setAsDefaultSuccess'));
   } catch (error) {
-    console.error('设置默认智能体错误:', error);
+    console.error('Setting default agent error:', error);
     message.error(error.message || t('agents.setAsDefaultError'));
   }
 };
@@ -291,7 +291,7 @@ const fetchDefaultAgent = async () => {
     defaultAgentId.value = data.default_agent_id;
     console.log("Default agent ID:", defaultAgentId.value);
   } catch (error) {
-    console.error('获取默认智能体错误:', error);
+    console.error('Getting default agent error:', error);
   }
 };
 
@@ -311,7 +311,7 @@ const fetchAgents = async () => {
       loadAgentConfig();
     }
   } catch (error) {
-    console.error('获取智能体错误:', error);
+    console.error('Getting agent error:', error);
   }
 };
 
@@ -371,10 +371,10 @@ const loadAgentConfig = async () => {
           }
         }
       });
-      console.log(`从服务器加载 ${selectedAgentId.value} 配置成功, ${JSON.stringify(agentConfig.value)}`);
+      console.log(`Successfully loaded configuration for agent ${selectedAgentId.value}: ${JSON.stringify(agentConfig.value)}`);
     }
   } catch (error) {
-    console.error('从服务器加载配置出错:', error);
+    console.error('Getting configuration error:', error);
   }
 };
 
@@ -394,9 +394,9 @@ const saveConfig = async () => {
     await systemConfigApi.saveAgentConfig(selectedAgentId.value, agentConfig.value);
     // 提示保存成功
     message.success(t('agents.configSaved'));
-    console.log("保存配置:", agentConfig.value);
+    console.log("Saving configuration:", agentConfig.value);
   } catch (error) {
-    console.error('保存配置到服务器出错:', error);
+    console.error('Saving configuration error:', error);
     message.error(t('agents.configSaveFailed'));
   }
 };
@@ -415,7 +415,7 @@ const resetConfig = async () => {
     await loadAgentConfig();
     message.info(t('agents.configReset'));
   } catch (error) {
-    console.error('重置配置出错:', error);
+    console.error('Reset configuration error:', error);
     message.error(t('agents.configResetFailed'));
   }
 };

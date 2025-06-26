@@ -789,7 +789,7 @@ const chunkData = () => {
 
     knowledgeBaseApi.chunkFiles(databaseId.value, chunkDataPayload)
       .then((data) => {
-        console.log('文件处理结果:', data)
+        console.log('File processing result:', data)
         if (data.status === 'success') {
           const autoIndexingInfo = chunkParams.value.auto_indexing ? '，自动索引已启用' : ''
           message.info(data.message + autoIndexingInfo || t('database.fileSubmittedForProcessing'));

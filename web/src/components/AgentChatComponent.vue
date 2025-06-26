@@ -330,7 +330,7 @@ const selectChat = async (chatId) => {
     return;
   }
 
-  console.log("选择对话:", chatId);
+  console.log("Selected conversation:", chatId);
 
   // 切换到选中的对话
   currentChatId.value = chatId;
@@ -530,7 +530,7 @@ const processResponseChunk = async (data) => {
   if (data.status === 'init') {
     // 代表服务端收到请求并返回第一个响应
     state.waitingServerResponse = false;
-    console.log("处理流数据:", data.msg);
+    console.log("Processing stream data:", data.msg);
     onGoingConv.msgChunks[data.request_id] = [data.msg];
 
   } else if (data.status === 'loading') {
@@ -615,9 +615,9 @@ const getAgentHistory = async () => {
   }
 
   try {
-    console.log(`正在获取智能体[${props.agentId}]的历史记录，对话ID: ${currentChatId.value}`);
+    console.log(`Getting agent [${props.agentId}] history, conversation ID: ${currentChatId.value}`);
     const response = await chatApi.getAgentHistory(props.agentId, currentChatId.value);
-    console.log('智能体历史记录:', response);
+    console.log('Agent history:', response);
 
     // 如果成功获取历史记录并且是数组
     if (response && Array.isArray(response.history)) {
@@ -706,7 +706,7 @@ onMounted(async () => {
 onMounted(() => {
   watch(() => props.agentId, async (newAgentId, oldAgentId) => {
     try {
-      console.log("智能体ID变化", oldAgentId, "->", newAgentId);
+      console.log("Agent ID changed", oldAgentId, "->", newAgentId);
 
       // 如果变化了，重置会话并加载新数据
       if (newAgentId !== oldAgentId) {

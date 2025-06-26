@@ -416,7 +416,7 @@ const fetchProviderModels = async (provider) => {
   
   try {
     const data = await chatApi.getProviderModels(provider);
-    console.log(`${provider} 模型列表:`, data);
+    console.log(`${provider} model list:`, data);
 
     // 处理各种可能的API返回格式
     let modelsList = [];
@@ -434,7 +434,7 @@ const fetchProviderModels = async (provider) => {
       modelsList = data.models.data;
     }
 
-    console.log("处理后的模型列表:", modelsList);
+    console.log("Processed model list:", modelsList);
     providerConfig.allModels = modelsList;
   } catch (error) {
     console.error(`获取${provider}模型列表失败:`, error);
@@ -458,7 +458,7 @@ const saveProviderConfig = async () => {
   try {
     // 发送选择的模型列表到后端
     const data = await chatApi.updateProviderModels(providerConfig.provider, providerConfig.selectedModels);
-    console.log('更新后的模型列表:', data.models);
+    console.log('Updated model list:', data.models);
 
     message.success({ content: t('components.modelProviders.modelConfigSaved'), key: 'save-config', duration: 2 });
 

@@ -3,7 +3,7 @@
     <div class="overlay" v-if="visible && !isPinned" @click="$emit('update:visible', false)"></div>
     <div class="refs-sidebar">
       <div class="sidebar-header">
-        <h3>参考信息</h3>
+        <h3>{{ t('components.referenceInfo') }}</h3>
         <div class="sidebar-controls">
           <a-button type="text" @click="togglePin" class="pin-button">
             <PushpinOutlined :class="{ 'pinned': isPinned }" />
@@ -15,17 +15,17 @@
       </div>
       <a-tabs v-model:activeKey="activeTab" class="refs-tabs">
         <!-- 关系图 -->
-        <a-tab-pane key="graph" tab="关系图" :disabled="!hasGraphData">
+        <a-tab-pane key="graph" :tab="t('components.relationshipGraph')" :disabled="!hasGraphData">
           <div v-if="hasGraphData" class="graph-container">
             <GraphContainer :graphData="latestRefs.graph_base.results" ref="graphContainerRef" />
           </div>
           <div v-else class="empty-data">
-            <p>当前对话没有关系图数据</p>
+            <p>{{ t('components.noGraphData') }}</p>
           </div>
         </a-tab-pane>
 
         <!-- 网页搜索 -->
-        <a-tab-pane key="webSearch" tab="网页搜索" :disabled="!hasWebSearchData">
+        <a-tab-pane key="webSearch" :tab="t('chat.webSearch')" :disabled="!hasWebSearchData">
           <div v-if="hasWebSearchData" class="web-results-list">
             <div v-for="result in latestRefs.web_search.results" :key="result.url" class="web-result-card">
               <div class="card-header">
@@ -38,19 +38,19 @@
               </div>
               <div class="card-footer">
                 <div class="score-info">
-                  <span>相关度：{{ getPercent(result.score) }}%</span>
-                  <span>来源：{{ getDomain(result.url) }}</span>
+                  <span>{{ t('components.relevance') }}：{{ getPercent(result.score) }}%</span>
+                  <span>{{ t('components.source') }}：{{ getDomain(result.url) }}</span>
                 </div>
               </div>
             </div>
           </div>
           <div v-else class="empty-data">
-            <p>当前对话没有网页搜索数据</p>
+            <p>{{ t('components.noWebSearchData') }}</p>
           </div>
         </a-tab-pane>
 
         <!-- 知识库 -->
-        <a-tab-pane key="knowledgeBase" tab="知识库" :disabled="!hasKnowledgeBaseData">
+        <a-tab-pane key="knowledgeBase" :tab="t('chat.knowledgeBase')" :disabled="!hasKnowledgeBaseData">
           <div v-if="hasKnowledgeBaseData">
             <div class="file-list">
               <a-collapse v-model:activeKey="activeFiles">
@@ -64,11 +64,11 @@
                       <div class="result-meta">
                         <div class="score-info">
                           <span>
-                            <strong>相似度：</strong>
+                            <strong>{{ t('components.similarity') }}：</strong>
                             <a-progress :percent="getPercent(res.distance)"/>
                           </span>
                           <span v-if="res.rerank_score">
-                            <strong>重排序：</strong>
+                            <strong>{{ t('components.rerank') }}：</strong>
                             <a-progress :percent="getPercent(res.rerank_score)"/>
                           </span>
                         </div>
@@ -82,7 +82,7 @@
             </div>
           </div>
           <div v-else class="empty-data">
-            <p>当前对话没有知识库查询数据</p>
+            <p>{{ t('components.noKnowledgeBaseData') }}</p>
           </div>
         </a-tab-pane>
       </a-tabs>
@@ -98,7 +98,10 @@ import {
   CloseOutlined,
   PushpinOutlined
 } from '@ant-design/icons-vue'
+import { useI18n } from 'vue-i18n'
 import GraphContainer from './GraphContainer.vue'
+
+const { t } = useI18n()
 
 const props = defineProps({
   visible: {
