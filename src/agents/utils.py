@@ -1,4 +1,5 @@
 from datetime import datetime, timezone, UTC
+from zoneinfo import ZoneInfo
 import asyncio
 
 from src.models import select_model
@@ -57,5 +58,7 @@ async def agent_cli(agent: BaseAgent, config: RunnableConfig = None):
                 print(f"Tool: {msg.content}")
 
 def get_cur_time_with_utc():
-    return datetime.now(tz=UTC).isoformat()
+    # 使用日本标准时间 (JST, UTC+9) 而不是UTC
+    jst = ZoneInfo('Asia/Tokyo')
+    return datetime.now(tz=jst).isoformat()
 
