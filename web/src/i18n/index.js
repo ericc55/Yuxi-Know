@@ -6,7 +6,7 @@ import ja from './index_ja.js';
 // Create and export i18n instance
 export default createI18n({
   legacy: false,
-  locale: localStorage.getItem('app_language') || 'zh', // Default to Chinese
+  locale: localStorage.getItem('app_language') || 'ja', // Default to Japanese
   fallbackLocale: 'en',
   messages: {
     en,

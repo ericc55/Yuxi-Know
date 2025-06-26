@@ -19,8 +19,8 @@ export const useLanguageStore = defineStore('language', () => {
     }
   ])
 
-  // Current language - get from localStorage or default to Chinese
-  const currentLanguage = ref(localStorage.getItem('app_language') || 'zh')
+  // Current language - get from localStorage or default to Japanese
+  const currentLanguage = ref(localStorage.getItem('app_language') || 'ja')
 
   // Computed property to get current language info
   const currentLanguageInfo = computed(() => {
