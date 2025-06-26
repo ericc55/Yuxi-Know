@@ -12,8 +12,8 @@ export const useInfoStore = defineStore('info', () => {
   const organization = computed(() => infoConfig.value.organization || {
     name: "Yuxi-Know",
     short_name: "Yuxi",
-    avatar: '/logo.png',
-    logo: '/logo.png'
+    avatar: '/favicon.png',
+    logo: '/favicon.png'
   })
 
   // 计算属性 - 品牌信息

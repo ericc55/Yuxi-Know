@@ -3,7 +3,7 @@ import json
 import requests
 import asyncio
 from abc import abstractmethod
-from zhipuai import ZhipuAI
+# from zhipuai import ZhipuAI
 from langchain_huggingface import HuggingFaceEmbeddings
 
 from src import config

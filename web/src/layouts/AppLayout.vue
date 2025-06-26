@@ -116,7 +116,12 @@ const mainList = computed(() => [{
     <div class="header" :class="{ 'top-bar': layoutSettings.useTopBar }">
       <div class="logo circle">
         <router-link to="/">
-          <img :src="infoStore.organization.avatar">
+          <img 
+            :src="infoStore.organization.avatar" 
+            :alt="infoStore.organization.name"
+            @error="(e) => { console.error('Logo failed to load:', e.target.src); e.target.src = '/favicon.png' }"
+            @load="() => console.log('Logo loaded successfully:', infoStore.organization.avatar)"
+          >
           <span class="logo-text">{{ infoStore.organization.short_name }}</span>
         </router-link>
       </div>

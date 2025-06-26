@@ -41,7 +41,9 @@ def get_default_info_config():
             "name": "江南语析",
             "short_name": "语析",
             "logo": "/favicon.svg",
+            # "logo": "/favicon.png",
             "avatar": "/avatar.jpg"
+            # "avatar": "/favicon.png"
         },
         "branding": {
             "title": "Yuxi-Know",

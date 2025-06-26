@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="preview-section">
+    <!-- <div class="preview-section">
       <div class="preview-container">
         <img src="/home.png" :alt="t('home.systemPreview')" />
         <div class="preview-overlay">
@@ -37,7 +37,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <footer>
       <p>{{ infoStore.footer.copyright }}</p>
