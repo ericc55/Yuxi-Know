@@ -386,7 +386,9 @@ export default {
     forbidden: '访问被拒绝',
     notFound: '资源未找到',
     validationError: '验证错误',
-    unknownError: '发生未知错误'
+    unknownError: '发生未知错误',
+    serverConnectionFailed: '服务端连接失败',
+    retry: '重试'
   },
   messages: {
     saveSuccess: '保存成功',

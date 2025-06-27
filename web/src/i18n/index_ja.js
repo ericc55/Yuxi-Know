@@ -393,7 +393,9 @@ export default {
     forbidden: 'アクセス拒否',
     notFound: 'リソースが見つかりません',
     validationError: '検証エラー',
-    unknownError: '不明なエラー'
+    unknownError: '不明なエラー',
+    serverConnectionFailed: 'サーバー接続に失敗しました',
+    retry: '再試行'
   },
   messages: {
     saveSuccess: '保存成功',

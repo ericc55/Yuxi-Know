@@ -6,11 +6,11 @@
       <div class="alert-content">
         <exclamation-circle-outlined class="alert-icon" />
         <div class="alert-text">
-          <div class="alert-title">服务端连接失败</div>
+          <div class="alert-title">{{ t('errors.serverConnectionFailed') }}</div>
           <div class="alert-message">{{ serverError }}</div>
         </div>
         <a-button type="link" size="small" @click="checkServerHealth" :loading="healthChecking">
-          重试
+          {{ t('errors.retry') }}
         </a-button>
       </div>
     </div>

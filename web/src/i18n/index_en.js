@@ -386,7 +386,9 @@ export default {
     forbidden: 'Access denied',
     notFound: 'Resource not found',
     validationError: 'Validation error',
-    unknownError: 'Unknown error occurred'
+    unknownError: 'Unknown error occurred',
+    serverConnectionFailed: 'Server connection failed',
+    retry: 'Retry'
   },
   messages: {
     saveSuccess: 'Saved successfully',
