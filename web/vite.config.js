@@ -24,6 +24,11 @@ export default defineConfig(({ mode }) => {
         ignored: ['**/node_modules/**', '**/dist/**'],
       },
       host: '0.0.0.0',
+      port: 5173,               // optional: mirrors the compose file
+      // 👇  allow the domain that Caddy / router forwards
+      allowedHosts: ['yuknow.net', '.yuknow.net'], // second entry permits sub-domains
+      // If you prefer to disable the check completely (dev only!):
+      // allowedHosts: 'all',
     }
   }
 })
