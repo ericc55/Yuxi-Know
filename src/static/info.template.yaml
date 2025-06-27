@@ -4,7 +4,7 @@
 
 # 组织信息
 organization:
-  name: "江南YU-KNOW"           # 完整组织名称
+  name: "YU-KNOW"           # 完整组织名称
   short_name: "YU-KNOW"         # 简短名称
   logo: "/favicon.svg"       # Logo文件路径
   avatar: "/avatar.jpg"      # 头像文件路径
@@ -23,4 +23,4 @@ features:
 
 # 页脚信息
 footer:
-  copyright: "© 江南YU-KNOW 2025 [WIP] v0.12.138"
+  copyright: "© YU-KNOW 2025 [WIP] v0.12.138"

@@ -38,12 +38,12 @@ def get_default_info_config():
     """获取默认信息配置"""
     return {
         "organization": {
-            "name": "江南YU-KNOW",
+            "name": "YU-KNOW",
             "short_name": "YU-KNOW",
-            "logo": "/favicon.svg",
-            # "logo": "/favicon.png",
-            "avatar": "/avatar.jpg"
-            # "avatar": "/favicon.png"
+            # "logo": "/favicon.svg",
+            "logo": "/favicon.png",
+            # "avatar": "/avatar.jpg"
+            "avatar": "/favicon.png"
         },
         "branding": {
             "title": "YU-KNOW",
@@ -56,7 +56,7 @@ def get_default_info_config():
             "🤖 多模型支持"
         ],
         "footer": {
-            "copyright": "© 江南YU-KNOW 2025 [WIP] v0.12.138"
+            "copyright": "© YU-KNOW 2025  v0.12.138"
         }
     }
 
