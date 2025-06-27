@@ -25,11 +25,13 @@ class ChatbotConfiguration(Configuration):
     )
 
     model: str = field(
-        default="zhipu/glm-4-plus",
+        default="openai/gpt-4o",
         metadata={
             "name": "智能体模型",
             "configurable": True,
             "options": [
+                "openai/gpt-4o",
+                "openai/gpt-4o-mini",
                 "zhipu/glm-4-plus",
                 "siliconflow/Qwen/Qwen2.5-72B-Instruct",
                 "siliconflow/Qwen/Qwen2.5-7B-Instruct",

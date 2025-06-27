@@ -30,7 +30,7 @@ class ChatbotAgent(BaseAgent):
     # Default description (can be overridden by get_description method)
     description = descriptions.get("zh", "Basic conversational robot")
     
-    requirements = ["TAVILY_API_KEY", "ZHIPUAI_API_KEY"]
+    requirements = ["TAVILY_API_KEY"]  # Only require TAVILY for web search, model provider keys are checked dynamically
     config_schema = ChatbotConfiguration
 
     def get_description(self, language="zh"):
