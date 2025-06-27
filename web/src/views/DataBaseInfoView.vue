@@ -994,13 +994,6 @@ watch(() => meta, () => {
   filterQueryResults()
 }, { deep: true })
 
-const queryExamples = ref([
-  t('database.queryExamples.example1'),
-  t('database.queryExamples.example2'),
-  t('database.queryExamples.example3'),
-  t('database.queryExamples.example4'),
-]);
-
 const useQueryExample = (example) => {
   queryText.value = example;
   onQuery();
@@ -1019,9 +1012,6 @@ onUnmounted(() => {
     state.refreshInterval = null;
   }
 })
-
-const uploadMode = ref('file');
-const urlList = ref('');
 
 const getAuthHeaders = () => {
   const userStore = useUserStore();

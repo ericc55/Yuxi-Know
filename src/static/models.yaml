@@ -21,6 +21,19 @@ MODEL_NAMES:
       - gpt-4o-mini
       - gpt-3.5-turbo
 
+  siliconflow:
+    name: SiliconFlow
+    url: https://cloud.siliconflow.cn/models
+    default: Qwen/Qwen2.5-7B-Instruct
+    base_url: https://api.siliconflow.cn/v1
+    env:
+      - SILICONFLOW_API_KEY
+    models:
+      - Pro/deepseek-ai/DeepSeek-R1
+      - Pro/deepseek-ai/DeepSeek-V3
+      - Qwen/QwQ-32B
+      - Qwen/Qwen2.5-7B-Instruct
+
 #  deepseek:
 #    name: DeepSeek
 #    url: https://platform.deepseek.com/api-docs/zh-cn/pricing
@@ -44,17 +57,6 @@ MODEL_NAMES:
 #      - glm-4-air
 #      - glm-4-flash
 #      - glm-z1-air
-#  siliconflow:
-#    name: SiliconFlow
-#    url: https://cloud.siliconflow.cn/models
-#    default: Qwen/Qwen2.5-7B-Instruct
-#    base_url: https://api.siliconflow.cn/v1
-#    env:
-#      - SILICONFLOW_API_KEY
-#    models:
-#      - Pro/deepseek-ai/DeepSeek-R1
-#      - Pro/deepseek-ai/DeepSeek-V3
-#      - Qwen/QwQ-32B
 #
 #  together.ai:
 #    name: Together.ai

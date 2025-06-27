@@ -56,8 +56,8 @@ class Config(SimpleConfig):
         # 模型配置
         ## 注意这里是模型名，而不是具体的模型路径，默认使用 HuggingFace 的路径
         ## 如果需要自定义本地模型路径，则在 src/.env 中配置 MODEL_DIR
-        self.add_item("model_provider", default="siliconflow", des="模型提供商", choices=list(self.model_names.keys()))
-        self.add_item("model_name", default="Qwen/Qwen2.5-7B-Instruct", des="模型名称")
+        self.add_item("model_provider", default="openai", des="模型提供商", choices=list(self.model_names.keys()))
+        self.add_item("model_name", default="gpt-3.5-turbo", des="模型名称")
 
         self.add_item("embed_model", default="siliconflow/BAAI/bge-m3", des="Embedding 模型", choices=list(self.embed_model_names.keys()))
         self.add_item("reranker", default="siliconflow/BAAI/bge-reranker-v2-m3", des="Re-Ranker 模型", choices=list(self.reranker_names.keys()))  # noqa: E501
@@ -135,11 +135,23 @@ class Config(SimpleConfig):
 
         # 检查模型提供商是否存在
         if self.model_provider != "custom":
-            if self.model_name not in model_provider_info["models"]:
-                logger.warning(f"Model name {self.model_name} not in {self.model_provider}, using default model name")
-                self.model_name = model_provider_info["default"]
+            if "models" not in model_provider_info:
+                logger.error(f"Model provider {self.model_provider} is missing 'models' configuration. Available providers: {list(self.model_names.keys())}")
+                # Fallback to first available provider
+                available_providers = list(self.model_names.keys())
+                if available_providers:
+                    self.model_provider = available_providers[0]
+                    model_provider_info = self.model_names.get(self.model_provider, {})
+                    logger.warning(f"Switched to provider: {self.model_provider}")
+                else:
+                    logger.error("No model providers available in configuration")
+                    return
 
-            default_model_name = model_provider_info["default"]
+            if self.model_name not in model_provider_info.get("models", []):
+                logger.warning(f"Model name {self.model_name} not in {self.model_provider}, using default model name")
+                self.model_name = model_provider_info.get("default", "gpt-3.5-turbo")
+
+            default_model_name = model_provider_info.get("default", "gpt-3.5-turbo")
             self.model_name = self.get("model_name") or default_model_name
         else:
             self.model_name = self.get("model_name")
@@ -170,7 +182,14 @@ class Config(SimpleConfig):
             self.enable_web_search = True
 
         self.valuable_model_provider = [k for k, v in self.model_provider_status.items() if v]
-        assert len(self.valuable_model_provider) > 0, f"No model provider available, please check your `.env` file. API_KEY_LIST: {conds}"
+        
+        if len(self.valuable_model_provider) == 0:
+            logger.warning(f"No model providers with valid API keys found. API_KEY_LIST: {conds}")
+            logger.warning("The system will start but model functionality will be limited.")
+            logger.warning("Please configure at least one API key in src/.env file")
+            logger.info(f"To enable model providers, set one of these environment variables: {[env for provider_envs in conds.values() for env in provider_envs]}")
+        else:
+            logger.info(f"Available model providers: {self.valuable_model_provider}")
 
     def load(self):
         """根据传入的文件覆盖掉默认配置"""
